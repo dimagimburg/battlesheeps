@@ -4,25 +4,24 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.example.dima.battlesheeps.R;
-import com.example.dima.battlesheeps.UI.Listeners.DifficultyDialogListener;
+import com.example.dima.battlesheeps.MVCListeners.MainActivityEventListener;
+import com.example.dima.battlesheeps.UI.UIListeners.MainActivityDifficultyDialogListener;
 
 import java.util.Vector;
 
 public class DifficultyFragment extends DialogFragment {
 
-    private EditText mEditText;
-    private int selectedDifficulty;
+    private final String TAG = "DifficultyFragment";
 
-    private Vector<DifficultyDialogListener> mListeners = new Vector<>();
+    private Vector<MainActivityDifficultyDialogListener> mUIListeners = new Vector<>();
 
     public DifficultyFragment() {
         // Empty constructor required for DialogFragment
@@ -30,6 +29,7 @@ public class DifficultyFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.fragment_difficulty, null);
@@ -42,10 +42,8 @@ public class DifficultyFragment extends DialogFragment {
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-
                                 int chosenId = rg.getCheckedRadioButtonId();
                                 int convertedIdToDifficulty;
-
                                 switch (chosenId) {
                                     case R.id.amateur:
                                         default:
@@ -58,10 +56,7 @@ public class DifficultyFragment extends DialogFragment {
                                         convertedIdToDifficulty = 3;
                                         break;
                                 }
-
-                                for (DifficultyDialogListener l : mListeners) {
-                                    l.onSubmitDifficultyDialog(convertedIdToDifficulty);
-                                }
+                                setNewDifficultyOnView(convertedIdToDifficulty);
                             }
                         }
                 )
@@ -78,7 +73,18 @@ public class DifficultyFragment extends DialogFragment {
 
     }
 
-    public void registerListener(DifficultyDialogListener l){
-        mListeners.add(l);
+    public void registerUIListener(MainActivityDifficultyDialogListener l){
+        mUIListeners.add(l);
     }
+
+    private void fireToUIDifficultyChanged(int difficulty){
+        for(MainActivityDifficultyDialogListener l : mUIListeners){
+            l.onDialogSubmit(difficulty);
+        }
+    }
+
+    public void setNewDifficultyOnView(int newDifficulty){
+        fireToUIDifficultyChanged(newDifficulty);
+    }
+
 }

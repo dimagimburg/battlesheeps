@@ -1,14 +1,15 @@
 package com.example.dima.battlesheeps.BL;
 
-import java.io.Serializable;
+import com.example.dima.battlesheeps.MVCListeners.GameSettingsEventListener;
 
-/**
- * Created by Dima on 28/03/2016.
- */
+import java.io.Serializable;
+import java.util.Vector;
+
 public class Game implements Serializable{
 
     private Board mBoard;
-    private int mDifficulty;
+    private int mDifficulty = 1; // default
+    private Vector<GameSettingsEventListener> mListeners = new Vector<>();
 
     public Game(){
         mBoard = new Board();
@@ -29,5 +30,17 @@ public class Game implements Serializable{
 
     public void setmDifficulty(int mDifficulty) {
         this.mDifficulty = mDifficulty;
+        fireGameDifficultyChanged(mDifficulty);
+
+    }
+
+    public void registerListener(GameSettingsEventListener gel){
+        mListeners.add(gel);
+    }
+
+    private void fireGameDifficultyChanged(int difficulty){
+        for(GameSettingsEventListener l : mListeners){
+            l.changedDifficulty(difficulty);
+        }
     }
 }
