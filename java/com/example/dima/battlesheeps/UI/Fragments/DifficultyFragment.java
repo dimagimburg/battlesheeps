@@ -21,10 +21,35 @@ public class DifficultyFragment extends DialogFragment {
 
     private final String TAG = "DifficultyFragment";
 
+    private int currentDifficulty;
     private Vector<MainActivityDifficultyDialogListener> mUIListeners = new Vector<>();
 
     public DifficultyFragment() {
         // Empty constructor required for DialogFragment
+    }
+
+    public int getCurrentDifficulty() {
+        return currentDifficulty;
+    }
+
+    public void setCurrentDifficulty(int currentDifficulty) {
+        this.currentDifficulty = currentDifficulty;
+    }
+
+    private void setCurrentDificultyonView(RadioGroup rg){
+        switch(getCurrentDifficulty()){
+            case 1:
+            default:
+                rg.check(R.id.amateur);
+                break;
+            case 2:
+                rg.check(R.id.advanced);
+                break;
+            case 3:
+                rg.check(R.id.hard);
+                break;
+        }
+
     }
 
     @Override
@@ -35,11 +60,11 @@ public class DifficultyFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_difficulty, null);
 
         final RadioGroup rg = (RadioGroup) view.findViewById(R.id.difficultyGroup);
-
+        setCurrentDificultyonView(rg);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle("title")
-                .setPositiveButton("OK",
+                .setTitle("Please Choose Difficulty:")
+                .setPositiveButton("Choose",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 int chosenId = rg.getCheckedRadioButtonId();

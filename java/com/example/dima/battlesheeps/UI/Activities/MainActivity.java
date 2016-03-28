@@ -64,6 +64,7 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
     private void showDifficultyDialog() {
         FragmentManager fm = getSupportFragmentManager();
         DifficultyFragment difficultyFragment = new DifficultyFragment();
+        difficultyFragment.setCurrentDifficulty(mGame.getmDifficulty());
         difficultyFragment.registerUIListener(this);
         difficultyFragment.show(fm, "fragment_difficulty");
     }

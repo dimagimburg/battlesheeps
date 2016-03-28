@@ -1,5 +1,7 @@
 package com.example.dima.battlesheeps.BL;
 
+import android.util.Log;
+
 import com.example.dima.battlesheeps.MVCListeners.GameSettingsEventListener;
 
 import java.io.Serializable;
@@ -7,6 +9,7 @@ import java.util.Vector;
 
 public class Game implements Serializable{
 
+    private final String TAG = "BL.Game";
     private Board mBoard;
     private int mDifficulty = 1; // default
     private Vector<GameSettingsEventListener> mListeners = new Vector<>();
@@ -30,8 +33,8 @@ public class Game implements Serializable{
 
     public void setmDifficulty(int mDifficulty) {
         this.mDifficulty = mDifficulty;
+        Log.e(TAG, "setmDifficulty(" + mDifficulty + ")");
         fireGameDifficultyChanged(mDifficulty);
-
     }
 
     public void registerListener(GameSettingsEventListener gel){
