@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.dima.battlesheeps.BL.Game;
-import com.example.dima.battlesheeps.Controllers.GameController;
+import com.example.dima.battlesheeps.Controllers.LoginMenuController;
 import com.example.dima.battlesheeps.MVCListeners.MainActivityEventListener;
 import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Fragments.DifficultyFragment;
@@ -24,14 +24,13 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
     private final Game mGame = new Game();
     private Vector<MainActivityEventListener> mMCVListeners = new Vector<>();
 
-
     private Button difficultyDialogButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GameController gameController = new GameController(mGame,this);
+        final LoginMenuController gameController = new LoginMenuController(mGame,this);
 
         setContentView(R.layout.activity_main);
 
@@ -42,9 +41,9 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, GameActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putInt("difficulty", mGame.getmDifficulty());
-                    bundle.putSerializable("board", mGame.getmBoard());
+                    bundle.putSerializable("game", mGame);
                     intent.putExtras(bundle);
+                    gameController.destroy();
                     MainActivity.this.startActivity(intent);
                 }
             });

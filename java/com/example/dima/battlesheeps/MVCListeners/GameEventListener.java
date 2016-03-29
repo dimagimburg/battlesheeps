@@ -1,5 +1,5 @@
 package com.example.dima.battlesheeps.MVCListeners;
 
-public interface GameSettingsEventListener {
+public interface GameEventListener {
     void changedDifficulty(int difficulty);
 }

@@ -1,5 +1,6 @@
 package com.example.dima.battlesheeps.UI.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,8 @@ public class BoardAdapter extends BaseAdapter {
         } else {
             textView = (TextView) convertView;
         }
+
+        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getHeight()/((int) Math.sqrt(getCount()))));
 
         textView.setText("a");
         return textView;
