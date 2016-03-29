@@ -9,12 +9,35 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.dima.battlesheeps.UI.Activities.GameActivity">
 
-    <com.example.dima.battlesheeps.UI.Views.BoardView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numColumns="8"
-        android:id="@+id/BoardView">
+        android:text="Who&apos;s Turn?"
+        android:id="@+id/Turn"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-    </com.example.dima.battlesheeps.UI.Views.BoardView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/Turn"
+        android:layout_alignParentBottom="true"
+        android:weightSum="8">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:background="#74cc57"></RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="5"
+            android:background="#247d39"></RelativeLayout>
+    </LinearLayout>
+
 
 </RelativeLayout>
