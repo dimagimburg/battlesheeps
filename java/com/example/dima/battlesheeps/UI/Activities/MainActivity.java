@@ -4,33 +4,28 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.dima.battlesheeps.BL.Game;
-import com.example.dima.battlesheeps.Controllers.LoginMenuController;
-import com.example.dima.battlesheeps.MVCListeners.MainActivityEventListener;
 import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Fragments.DifficultyFragment;
 import com.example.dima.battlesheeps.UI.UIListeners.MainActivityDifficultyDialogListener;
+import com.example.dima.battlesheeps.UI.Constants.Constants;
 
-import java.util.Vector;
+import java.util.HashMap;
 
 public class MainActivity extends FragmentActivity implements MainActivityDifficultyDialogListener {
 
     private final String TAG = "MainActivity";
 
-    private final Game mGame = new Game();
-    private Vector<MainActivityEventListener> mMCVListeners = new Vector<>();
+    private HashMap<String, String> mSettings = new HashMap<>();
 
     private Button difficultyDialogButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final LoginMenuController gameController = new LoginMenuController(mGame,this);
+        initSettings();
 
         setContentView(R.layout.activity_main);
 
@@ -41,9 +36,8 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, GameActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("game", mGame);
+                    bundle.putSerializable(Constants.BUNDLE_SETTINGS_KEY, mSettings);
                     intent.putExtras(bundle);
-                    gameController.destroy();
                     MainActivity.this.startActivity(intent);
                 }
             });
@@ -63,28 +57,22 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
     private void showDifficultyDialog() {
         FragmentManager fm = getSupportFragmentManager();
         DifficultyFragment difficultyFragment = new DifficultyFragment();
-        difficultyFragment.setCurrentDifficulty(mGame.getmDifficulty());
+        difficultyFragment.setCurrentDifficulty(Integer.parseInt(mSettings.get(Constants.SETTINGS_DIFFICULTY_KEY)));
         difficultyFragment.registerUIListener(this);
         difficultyFragment.show(fm, "fragment_difficulty");
     }
 
-    public void registerMVCListener(MainActivityEventListener l){
-        mMCVListeners.add(l);
-    }
-
     @Override
     public void onDialogSubmit(int chosenDifficulty) {
-        fireDifficultyChanged(chosenDifficulty);
+        setNewDifficultyOnView(chosenDifficulty);
     }
 
-    private void fireDifficultyChanged(int difficulty){
-        Log.e(TAG, "fireDifficultyChanged");
-        for(MainActivityEventListener l : mMCVListeners){
-            l.difficultyChangedOnDialog(difficulty);
-        }
+    private void initSettings(){
+        mSettings.put(Constants.SETTINGS_DIFFICULTY_KEY,"1");
     }
 
     public void setNewDifficultyOnView(int newDifficulty){
-        difficultyDialogButton.setText("Difficulty: " + newDifficulty);
+        mSettings.put(Constants.SETTINGS_DIFFICULTY_KEY,newDifficulty + "");
+        difficultyDialogButton.setText("Difficulty: " + mSettings.get(Constants.SETTINGS_DIFFICULTY_KEY));
     }
 }

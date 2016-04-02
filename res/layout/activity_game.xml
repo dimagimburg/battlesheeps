@@ -32,13 +32,30 @@
             android:layout_weight="3"
             android:background="#74cc57" />
 
-        <RelativeLayout
-            android:id="@+id/rivalField"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="5"
-            android:background="#247d39" />
+            android:background="#da2c2c"
+            android:id="@+id/bottomField"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/playerDetails"
+                android:layout_weight="1"
+                android:background="#c00e79" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/rivalField"
+                android:background="#3b67c7"></RelativeLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 

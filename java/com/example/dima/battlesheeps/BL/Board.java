@@ -17,4 +17,5 @@ public class Board implements Serializable {
     public void setBoard(int[] board) {
         this.board = board;
     }
+
 }

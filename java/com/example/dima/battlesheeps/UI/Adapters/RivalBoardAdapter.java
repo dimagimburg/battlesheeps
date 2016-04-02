@@ -1,30 +1,27 @@
 package com.example.dima.battlesheeps.UI.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
-/* TODO: FROM FELIX */
-import com.example.dima.battlesheeps.BL.Board;
+import com.example.dima.battlesheeps.BL.Game;
 
-public class BoardAdapter extends BaseAdapter {
+public class RivalBoardAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    /* TODO: FROM FELIX */
-    private Board board = new Board();
+    private Game mGame;
 
-    public BoardAdapter(Context ctx){
+    public RivalBoardAdapter(Context ctx, Game game){
         this.mContext = ctx;
+        mGame = game;
     }
 
     @Override
     public int getCount() {
-        return board.getBoard().length;
+        return mGame.getBoardSize();
     }
 
     @Override
@@ -52,7 +49,8 @@ public class BoardAdapter extends BaseAdapter {
 
         textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getHeight()/((int) Math.sqrt(getCount()))));
 
-        textView.setText("a");
+        textView.setText("r");
         return textView;
     }
+
 }

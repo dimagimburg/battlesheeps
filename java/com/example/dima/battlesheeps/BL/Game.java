@@ -14,9 +14,9 @@ public class Game implements Serializable {
     private int mDifficulty = 1; // default
     private Vector<GameEventListener> mListeners = new Vector<>();
 
-    public Game(){
+    public Game(int difficulty){
         mBoard = new Board();
-        mDifficulty = 1;
+        mDifficulty = difficulty;
     }
 
     public Board getmBoard() {
@@ -46,4 +46,18 @@ public class Game implements Serializable {
             l.changedDifficulty(difficulty);
         }
     }
+
+    public int getBoardSize(){
+        switch (mDifficulty){
+            case 1:
+                default:
+                return 16;
+            case 2:
+                return 64;
+            case 3:
+                return 100;
+        }
+    }
+
+
 }
