@@ -1,15 +1,13 @@
 package com.example.dima.battlesheeps.UI.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-/* TODO: FROM FELIX */
-import com.example.dima.battlesheeps.BL.Board;
 import com.example.dima.battlesheeps.BL.Game;
 
 public class PlayerBoardAdapter extends BaseAdapter {
@@ -40,6 +38,7 @@ public class PlayerBoardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.e("PLAYERBOARDADAPTER",position + " RENDERED");
         TextView textView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
@@ -53,7 +52,7 @@ public class PlayerBoardAdapter extends BaseAdapter {
 
         textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getHeight()/((int) Math.sqrt(getCount()))));
 
-        textView.setText("p");
+        textView.setText("T");
         return textView;
     }
 }
