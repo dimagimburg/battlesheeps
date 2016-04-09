@@ -46,4 +46,13 @@ public class BattleFieldController implements GameEventListener, BattleFieldActi
         boolean rivalWins = mGame.isComputerWinner();
         mGameActivity.onPlayerPlayed(x, y, status, gameOver, playerWins, rivalWins);
     }
+
+    @Override
+    public void rivalPlays() {
+        String status = mGame.computerPlay();
+        boolean gameOver = mGame.isGameOver();
+        boolean playerWins = mGame.isPlayerWinner();
+        boolean rivalWins = mGame.isComputerWinner();
+        mGameActivity.onRivalPlayed(status, gameOver, playerWins, rivalWins);
+    }
 }

@@ -9,16 +9,20 @@ import java.util.Random;
 import java.util.Vector;
 
 public class Game implements Serializable {
-    private final String TAG = "BL.Game";
     public Board mPlayerBoard;
     public Board mComputerBoard;
     private Player mPlayer = new Player("Human");
     private int[] mLastHit=new int[2];
+    private int[] mLastFirstHit=new int[2];
     private boolean isLastTurnHit=false;
-    private int[] direction=new int[2];; //right,down,left,up
+    private int[] direction={0,0,0,0}; //right,down,left,up
     private Difficulty mDifficulty; // Normal default
     final int[] mBoardSize={8,10,12};
     private boolean isComputerWon=false;
+    private int coordX;
+    private int coordY;
+    private String status;
+    Random r = new Random();
     private Vector<GameEventListener> mListeners = new Vector<>();
 
     public Game(int difficulty){
@@ -47,35 +51,114 @@ public class Game implements Serializable {
         return mComputerBoard.getTileStatus(coordX, coordY);
     }
     public boolean isGameOver(){
-	if (mPlayer.isWinner())
+        if (mPlayer.isWinner())
             return mPlayer.isWinner();
         else
             return isComputerWon;
     }
     public boolean isPlayerWinner(){
-	return mPlayer.isWinner();
-	}
-    
+        return mPlayer.isWinner();
+    }
+
     public boolean isComputerWinner(){
-	return isComputerWon;
-	}
-
-    public boolean getPlayerIsFreeByCoordinate(int x, int y){
-        return mPlayerBoard.board[x][y].isFree();
+        return isComputerWon;
     }
 
-    public boolean getRivalIsFreeByCoordinate(int x, int y){
-        return mComputerBoard.board[x][y].isFree();
-    }
 
-    
     public String computerPlay() {
-        Random r = new Random();
+        coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
+        coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
+        if(!isLastTurnHit && direction[0]==0 && direction[1]==0 && direction[2]==0 && direction[3]==0)//random play
+            status=mPlayerBoard.Play(coordX,coordY);
+        else if(isLastTurnHit)//last turn was hit
+            if(direction[0]==1 && mLastHit[0]+1<mPlayerBoard.getSize()-1){
+                status=mPlayerBoard.Play(mLastHit[0]+1,mLastHit[1]);
+                if (status.equals("Hit"))
+                    mLastHit[0]++;
+            }
+            else if(direction[1]==1 && mLastHit[1]<mPlayerBoard.getSize()-1){
+                status=mPlayerBoard.Play(mLastHit[0],mLastHit[1]+1);
+                if (status.equals("Hit"))
+                    mLastHit[1]++;
+            }
+            else if(direction[2]==1 && mLastHit[0]>0){
+                status=mPlayerBoard.Play(mLastHit[0]-1,mLastHit[1]);
+                if (status.equals("Hit"))
+                    mLastHit[0]--;
+            }
+            else if(direction[3]==1 && mLastHit[1]>0){
+                status=mPlayerBoard.Play(mLastHit[0],mLastHit[1]-1);
+                if (status.equals("Hit"))
+                    mLastHit[1]--;
+            }
+            else{
+                status=mPlayerBoard.Play(coordX,coordY);
+            }
+        while (status.equals("fired")){
+            coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
+            coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
+            status=mPlayerBoard.Play(coordX,coordY);
+        }
+        if (status.equals("Win")){
+            mPlayer.addLoss();
+            isComputerWon=false;
+        }
+        if (status.equals("Hit")&& direction[0]==0 && direction[1]==0 && direction[2]==0 && direction[3]==0){
+            mLastFirstHit[0]=coordX;
+            mLastFirstHit[1]=coordY;
+            mLastHit[0]=coordX;
+            mLastHit[1]=coordY;
+        }
+        if (status.equals("Hit")){
+            //mLastHit[0]=coordX;
+            //mLastHit[1]=coordY;
+            isLastTurnHit=true;
+            direction[0]=1;
+            direction[1]=1;
+            direction[2]=1;
+            direction[3]=1;
+        }
+
+
+        if (status.equals("Miss") && (direction[0]==1 || direction[1]==1 || direction[2]==1 || direction[3]==1)){
+            if(direction[0]==1){
+                direction[0]=0;
+                mLastHit[0]=mLastFirstHit[0];
+                mLastHit[1]=mLastFirstHit[1];
+            }
+            else if(direction[1]==1){
+                direction[1]=0;
+                mLastHit[0]=mLastFirstHit[0];
+                mLastHit[1]=mLastFirstHit[1];
+            }
+            else if(direction[2]==1){
+                direction[2]=0;
+                mLastHit[0]=mLastFirstHit[0];
+                mLastHit[1]=mLastFirstHit[1];
+            }
+            else if(direction[3]==1){
+                direction[3]=0;
+                mLastHit[0]=mLastFirstHit[0];
+                mLastHit[1]=mLastFirstHit[1];
+                isLastTurnHit=false;
+            }
+        }
+        if (status.equals("Sunk")){
+            isLastTurnHit=false;
+            direction[0]=0;
+            direction[1]=0;
+            direction[2]=0;
+            direction[3]=0;
+
+        }
+        return status;
+
+        /*Random r = new Random();
         int coordX;
         int coordY;
         String status;
         coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
-        coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
+            coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
         status=mPlayerBoard.Play(coordX,coordY);
         while (status.equals("fired")){
             coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
@@ -86,7 +169,7 @@ public class Game implements Serializable {
             mPlayer.addLoss();
             isComputerWon=false;
         }
-        return status;
+        return status;*/
         /*Random r = new Random();
         int coordX;
         int coordY;
@@ -97,7 +180,7 @@ public class Game implements Serializable {
             coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
         }
         else{
-            
+
             if(direction[0]==1&&mLastHit[0]<mPlayerBoard.getSize()){
                 System.out.println(direction[0]);
                 coordX=mLastHit[0]+1;
@@ -194,6 +277,7 @@ public class Game implements Serializable {
     public void registerListener(GameEventListener gel){
         mListeners.add(gel);
     }
+
 }
 enum status {
     Hidden, Hit, Miss

@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import com.example.dima.battlesheeps.R;
 
 public class PlayerTileView extends ImageView {
-
-
     public PlayerTileView(Context context) {
         super(context);
         this.setImageResource(R.drawable.field);
@@ -16,6 +14,4 @@ public class PlayerTileView extends ImageView {
         this.setBackgroundColor(Color.WHITE);
         this.setPadding(1, 1, 1, 1);
     }
-
-
 }

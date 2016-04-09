@@ -59,12 +59,16 @@ public class RivalBoardAdapter extends BaseAdapter {
         if(tileStatus.equals("Free") || tileStatus.equals("Occupied")){
             tileView.setImageResource(R.drawable.field);
         } else {
-            if(tileStatus.equals("Hit")){
-                tileView.setImageResource(R.drawable.rivals_field_hit);
-            } else if(tileStatus.equals("Miss")) {
-                tileView.setImageResource(R.drawable.rivals_field_miss);
-            } else if(tileStatus.equals("Sunk")){
-                tileView.setImageResource(R.drawable.rivals_field_sunk);
+            switch (tileStatus) {
+                case "Hit":
+                    tileView.setImageResource(R.drawable.rivals_field_hit);
+                    break;
+                case "Miss":
+                    tileView.setImageResource(R.drawable.rivals_field_miss);
+                    break;
+                case "Sunk":
+                    tileView.setImageResource(R.drawable.rivals_field_sunk);
+                    break;
             }
 
         }

@@ -31,7 +31,7 @@ public class PlayerFieldBoardView extends GridView implements GameActivityPlayer
     public PlayerFieldBoardView(Context context) {
         super(context);
         mContext = (GameActivity) context;
-        this.setBackgroundColor(0xBBBAAA00);
+        mContext.registerGameActivityPlayerEventListener(this);
         this.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
@@ -44,7 +44,7 @@ public class PlayerFieldBoardView extends GridView implements GameActivityPlayer
     }
 
     @Override
-    public void onRivalPlayed(int x, int y, String status, boolean isGameOver, boolean isPlayerWon, boolean isRivalWon) {
-
+    public void onRivalPlayed(String status, boolean isGameOver, boolean isPlayerWon, boolean isRivalWon) {
+        mAdapter.notifyDataSetChanged();
     }
 }
