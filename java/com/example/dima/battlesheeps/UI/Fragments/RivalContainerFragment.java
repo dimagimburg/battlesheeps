@@ -9,14 +9,13 @@ import android.widget.RelativeLayout;
 
 import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
-import com.example.dima.battlesheeps.UI.Views.PlayerBoardView;
-import com.example.dima.battlesheeps.UI.Views.RivalBoardView;
+import com.example.dima.battlesheeps.UI.Views.RivalFieldBoardView;
 
 public class RivalContainerFragment extends Fragment {
 
     public RivalContainerFragment(){}
 
-    Game mGame;
+    private Game mGame;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,7 +23,7 @@ public class RivalContainerFragment extends Fragment {
         RelativeLayout playerContainer = (RelativeLayout) v.findViewById(R.id.rivalFieldContainer);
         Bundle args = getArguments();
         mGame = (Game) args.getSerializable("game");
-        RivalBoardView boardView = new RivalBoardView(getActivity());
+        RivalFieldBoardView boardView = new RivalFieldBoardView(getActivity());
         boardView.init(mGame);
         playerContainer.addView(boardView);
         return v;

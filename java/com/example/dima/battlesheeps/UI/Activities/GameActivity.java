@@ -1,6 +1,5 @@
 package com.example.dima.battlesheeps.UI.Activities;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,16 +12,19 @@ import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Constants.Constants;
 import com.example.dima.battlesheeps.UI.Fragments.PlayerContainerFragment;
 import com.example.dima.battlesheeps.UI.Fragments.RivalContainerFragment;
+import com.example.dima.battlesheeps.UI.UIListeners.GameActivityPlayerFieldListener;
+import com.example.dima.battlesheeps.UI.UIListeners.GameActivityRivalFieldListener;
 
 import java.util.HashMap;
 import java.util.Vector;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity{
 
     private final String TAG = "GameActivity";
 
     private Game mGame;
     private Vector<BattleFieldActivityEvenListener> mMCVListeners = new Vector<>();
+    private Vector<GameActivityRivalFieldListener> mRivalFieldListeners = new Vector<>();
     private BattleFieldController mController;
 
 
@@ -42,20 +44,49 @@ public class GameActivity extends AppCompatActivity {
             args.putSerializable("game", mGame);
 
             FragmentTransaction ftPlayer = getFragmentManager().beginTransaction();
-            Fragment playerContainerFragment = new PlayerContainerFragment();
+            PlayerContainerFragment playerContainerFragment = new PlayerContainerFragment();
             playerContainerFragment.setArguments(args);
             ftPlayer.add(R.id.playerField, playerContainerFragment).commit();
 
             FragmentTransaction ftRival = getFragmentManager().beginTransaction();
-            Fragment rivalContainerFragment = new RivalContainerFragment();
+            RivalContainerFragment rivalContainerFragment = new RivalContainerFragment();
             rivalContainerFragment.setArguments(args);
             ftRival.add(R.id.rivalField, rivalContainerFragment).commit();
 
         }
     }
 
-    public void registerListener(BattleFieldActivityEvenListener l){
+    public void registerBattleFieldActivityListener(BattleFieldActivityEvenListener l){
         mMCVListeners.add(l);
     }
+
+    public void registerGameActivityRivalEventListener(GameActivityRivalFieldListener l){
+        mRivalFieldListeners.add(l);
+    }
+//
+//    public void registerGameActivityPlayerEventListener(GameActivityPlayerFieldListener l){
+//        mPlayerListeners.add(l);
+//    }
+
+    private void firePlayerPlays(int x, int y){
+        for(BattleFieldActivityEvenListener l : mMCVListeners){
+            l.playerPlays(x,y);
+        }
+    }
+
+    private void firePlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon){
+        for(GameActivityRivalFieldListener l : mRivalFieldListeners){
+            l.onPlayerPlayed(x,y,status,isGameOver,playerWon,rivalWon);
+        }
+    }
+
+    public void playerPlays(int x, int y){
+        firePlayerPlays(x,y);
+    }
+
+    public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon){
+        firePlayerPlayed(x,y,status,isGameOver,playerWon,rivalWon);
+    }
+
 
 }

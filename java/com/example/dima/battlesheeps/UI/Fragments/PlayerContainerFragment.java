@@ -11,9 +11,10 @@ import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Views.PlayerBoardView;
 
+
 public class PlayerContainerFragment extends Fragment {
 
-    Game mGame;
+    private Game mGame;
 
     public PlayerContainerFragment(){}
 
@@ -28,4 +29,5 @@ public class PlayerContainerFragment extends Fragment {
         playerContainer.addView(boardView);
         return v;
     }
+
 }

@@ -19,7 +19,7 @@ public class BattleFieldController implements GameEventListener, BattleFieldActi
         setmGameActivity(gameActivity);
 
         mGame.registerListener(this);
-        mGameActivity.registerListener(this);
+        mGameActivity.registerBattleFieldActivityListener(this);
     }
 
     public Game getmGame() {
@@ -39,7 +39,11 @@ public class BattleFieldController implements GameEventListener, BattleFieldActi
     }
 
     @Override
-    public void changedDifficulty(int difficulty) {
-        // nothing to do here
+    public void playerPlays(int x, int y) {
+        String status = mGame.playersPlay(x,y);
+        boolean gameOver = mGame.isGameOver();
+        boolean playerWins = mGame.isPlayerWinner();
+        boolean rivalWins = mGame.isComputerWinner();
+        mGameActivity.onPlayerPlayed(x, y, status, gameOver, playerWins, rivalWins);
     }
 }

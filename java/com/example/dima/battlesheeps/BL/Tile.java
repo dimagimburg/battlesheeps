@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package battleship;
+package com.example.dima.battlesheeps.BL;//package battleship;
+
+import com.example.dima.battlesheeps.BL.Ship;
 
 import java.io.Serializable;
 
 public class Tile implements Serializable{
     private Ship mShip;
-    private String mstatus;
+    private String mstatus="Free";
     private boolean mfree=true;
 
     public boolean isFree() {

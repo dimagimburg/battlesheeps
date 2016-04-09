@@ -26,11 +26,12 @@
         android:weightSum="8">
 
         <RelativeLayout
-            android:id="@+id/playerField"
+            android:id="@+id/rivalField"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="3"
-            android:background="#74cc57" />
+            android:background="#74cc57"
+            android:padding="0dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -52,8 +53,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/rivalField"
-                android:background="#3b67c7"></RelativeLayout>
+                android:id="@+id/playerField"
+                android:background="#3b67c7"
+                android:padding="0dp"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"></RelativeLayout>
 
         </LinearLayout>
     </LinearLayout>

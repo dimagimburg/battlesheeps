@@ -7,6 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
+import com.example.dima.battlesheeps.UI.Utils.Utils;
+
+import java.util.HashMap;
 
 public class RivalBoardAdapter extends BaseAdapter {
 
@@ -21,7 +24,7 @@ public class RivalBoardAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mGame.getBoardSize();
+        return (mGame.getBoardSize() * mGame.getBoardSize());
     }
 
     @Override
@@ -47,9 +50,23 @@ public class RivalBoardAdapter extends BaseAdapter {
             textView = (TextView) convertView;
         }
 
-        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getHeight()/((int) Math.sqrt(getCount()))));
+        HashMap<String, Integer> coordinate = Utils.getCoordinateByPosition(position, (int) Math.sqrt(getCount()));
+        String tileStatus = mGame.getComputerTileStatus(coordinate.get("x"),coordinate.get("y"));
 
-        textView.setText("r");
+        if(tileStatus.equals("Free") || tileStatus.equals("Occupied")){
+            textView.setText("h");
+        } else {
+            if(tileStatus.equals("Hit")){
+                textView.setText("hit");
+            } else if(tileStatus.equals("Miss")) {
+                textView.setText("miss");
+            } else if(tileStatus.equals("Sunk")){
+                textView.setText("sunk");
+            }
+
+        }
+
+        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (parent.getHeight() / Math.sqrt(getCount()))));
         return textView;
     }
 

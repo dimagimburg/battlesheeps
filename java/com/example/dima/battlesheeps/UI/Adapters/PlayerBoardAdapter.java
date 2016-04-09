@@ -1,6 +1,7 @@
 package com.example.dima.battlesheeps.UI.Adapters;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,12 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
+import com.example.dima.battlesheeps.UI.Views.PlayerFieldRegularView;
+import com.example.dima.battlesheeps.UI.Views.PlayerShipRegularView;
+
+import java.util.HashMap;
+
+import static com.example.dima.battlesheeps.UI.Utils.Utils.getCoordinateByPosition;
 
 public class PlayerBoardAdapter extends BaseAdapter {
 
@@ -23,7 +30,7 @@ public class PlayerBoardAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mGame.getBoardSize();
+        return (mGame.getBoardSize() * mGame.getBoardSize());
     }
 
     @Override
@@ -38,21 +45,30 @@ public class PlayerBoardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.e("PLAYERBOARDADAPTER",position + " RENDERED");
-        TextView textView;
+        HashMap<String, Integer> coordinates = getCoordinateByPosition(position, mGame.getBoardSize());
+        View tileView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
-            textView = new TextView(mContext);
+            if(mGame.getPlayerIsFreeByCoordinate(coordinates.get("x"), coordinates.get("y"))){
+                tileView = new PlayerFieldRegularView(mContext);
+            } else {
+                tileView = new PlayerShipRegularView(mContext);
+            }
             //textView.setLayoutParams(new GridView.LayoutParams(85, 85));
             //textView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             //textView.setPadding(8, 8, 8, 8);
         } else {
-            textView = (TextView) convertView;
+            if(mGame.getPlayerIsFreeByCoordinate(coordinates.get("x"), coordinates.get("y"))){
+                tileView = (PlayerFieldRegularView) convertView;
+            } else {
+                tileView = (PlayerShipRegularView) convertView;
+            }
         }
 
-        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getHeight()/((int) Math.sqrt(getCount()))));
+        tileView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, parent.getHeight() / mGame.getBoardSize()));
 
-        textView.setText("T");
-        return textView;
+        //textView.setText(mGame.getRivalIsFreeByCoordinate(coordinates.get("x"), coordinates.get("y")) ? "o" : "x");
+        //textView.setTextSize(10);
+        return tileView;
     }
 }

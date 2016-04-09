@@ -69,13 +69,13 @@ public class DifficultyFragment extends DialogFragment {
                                 switch (chosenId) {
                                     case R.id.amateur:
                                         default:
-                                        convertedIdToDifficulty = 1;
+                                        convertedIdToDifficulty = 0;
                                         break;
                                     case R.id.advanced:
-                                        convertedIdToDifficulty = 2;
+                                        convertedIdToDifficulty = 1;
                                         break;
                                     case R.id.hard:
-                                        convertedIdToDifficulty = 3;
+                                        convertedIdToDifficulty = 2;
                                         break;
                                 }
                                 setNewDifficultyOnView(convertedIdToDifficulty);

@@ -1,8 +1,6 @@
-//package com.example.dima.battlesheeps.BL;
-package battleship;
-/**
- * Created by Felix on 02.04.2016.
- */
+package com.example.dima.battlesheeps.BL;
+//package battleship;
+
 public class Difficulty {
     final int[] mDefaultBoardSize={8,10,12};
     final int[] mDefaultShipNumber={1,2,3,4};

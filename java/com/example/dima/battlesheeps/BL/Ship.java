@@ -1,10 +1,7 @@
-//package com.example.dima.battlesheeps.BL;
-package battleship;
+package com.example.dima.battlesheeps.BL;
+//package battleship;
 import java.io.Serializable;
 
-/**
- * Created by Felix on 02.04.2016.
- */
 public class Ship implements Serializable {
     private String mshipType;
     private int msize;
@@ -38,3 +35,4 @@ public class Ship implements Serializable {
     }
 
 }
+
