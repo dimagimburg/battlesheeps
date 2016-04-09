@@ -99,9 +99,40 @@ public class GameActivity extends AppCompatActivity{
         firePlayerPlays(x, y);
     }
 
+    private void showLoader(){
+        View v = findViewById(R.id.loader);
+        v.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoader(){
+        View v = findViewById(R.id.loader);
+        v.setVisibility(View.INVISIBLE);
+    }
+
     public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon) {
-        firePlayerPlayed(x,y,status,isGameOver,playerWon,rivalWon);
-        fireRivalPlays(); // here the simulation of PC play
+        firePlayerPlayed(x, y, status, isGameOver, playerWon, rivalWon);
+        showLoader();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        fireRivalPlays(); // here the simulation of PC play
+                        hideLoader();
+
+                    }
+                });
+
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
     }
 
     public void onRivalPlayed(String status, boolean gameOver, boolean playerWins, boolean rivalWins){
