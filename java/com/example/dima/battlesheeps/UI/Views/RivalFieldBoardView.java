@@ -45,7 +45,10 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
         gv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 HashMap<String, Integer> coordinates = getCoordinateByPosition(position, mGame.getBoardSize());
-                mContext.playerPlays(coordinates.get("x"), coordinates.get("y"));
+                String tileStatus = mGame.getComputerTileStatus(coordinates.get("x"), coordinates.get("y"));
+                if(!(tileStatus.equals("Hit") || tileStatus.equals("Miss") || tileStatus.equals("Sunk"))){
+                    mContext.playerPlays(coordinates.get("x"), coordinates.get("y"));
+                }
             }
         });
     }
@@ -53,5 +56,8 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
     @Override
     public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean isPlayerWon, boolean isRivalWon) {
         adapter.notifyDataSetChanged();
+        if(isGameOver && isPlayerWon){
+            mContext.playerWon();
+        }
     }
 }

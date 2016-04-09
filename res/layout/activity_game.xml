@@ -46,16 +46,172 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:background="#da2c2c"
             android:id="@+id/bottomField"
             android:weightSum="2"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:background="#5867bd">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/playerDetails"
-                android:layout_weight="1" />
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="10">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sheeps dead:"
+                            android:id="@+id/textView4"
+                            android:textColor="#ffffff" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="NUM_DEAD"
+                            android:id="@+id/sheeps_dead"
+                            android:layout_marginTop="55dp"
+                            android:layout_toRightOf="@+id/textView4"
+                            android:layout_alignBottom="@+id/textView4"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="#ffffff" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sheeps left:"
+                            android:id="@+id/textView6"
+                            android:layout_alignParentTop="false"
+                            android:layout_below="@+id/textView4"
+                            android:textColor="#ffffff" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="NUM_LEFT"
+                            android:id="@+id/sheeps_left"
+                            android:layout_toRightOf="@+id/textView6"
+                            android:layout_alignTop="@+id/textView6"
+                            android:layout_marginLeft="20dp"
+                            android:textColor="#ffffff" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="9"
+                        android:weightSum="4"
+                        android:paddingTop="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/ship_1"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"
+                                android:singleLine="true" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageView5"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@+id/ship_1"
+                                android:src="@drawable/ship1" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/ship_2"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageView6"
+                                android:src="@drawable/ship2"
+                                android:layout_alignParentTop="true"
+                                android:layout_toEndOf="@+id/ship_2" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/ship_3"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageView7"
+                                android:src="@drawable/ship3"
+                                android:layout_alignParentTop="true"
+                                android:layout_toEndOf="@+id/ship_3" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:id="@+id/ship_4"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageView8"
+                                android:src="@drawable/ship4"
+                                android:layout_alignParentTop="true"
+                                android:layout_toEndOf="@+id/ship_4" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -74,8 +230,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#90ffffff"
-        android:visibility="invisible"
+        android:background="#a1ffffff"
+        android:visibility="gone"
         android:id="@+id/loader">
 
         <TextView
@@ -93,7 +249,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:indeterminate="false" />
+
     </RelativeLayout>
 
 

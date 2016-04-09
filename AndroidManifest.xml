@@ -15,7 +15,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.Activities.GameActivity"></activity>
+        <activity android:name=".UI.Activities.GameActivity" />
+        <activity
+            android:name=".UI.Activities.GameOverActivity"
+            android:label="@string/title_activity_game_over"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

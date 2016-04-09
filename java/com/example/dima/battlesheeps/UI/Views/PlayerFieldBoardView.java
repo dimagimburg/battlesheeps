@@ -46,5 +46,8 @@ public class PlayerFieldBoardView extends GridView implements GameActivityPlayer
     @Override
     public void onRivalPlayed(String status, boolean isGameOver, boolean isPlayerWon, boolean isRivalWon) {
         mAdapter.notifyDataSetChanged();
+        if(isGameOver && isRivalWon){
+            mContext.rivalWon();
+        }
     }
 }

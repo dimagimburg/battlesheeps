@@ -1,6 +1,7 @@
 package com.example.dima.battlesheeps.UI.Activities;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -97,6 +98,22 @@ public class GameActivity extends AppCompatActivity{
 
     public void playerPlays(int x, int y) {
         firePlayerPlays(x, y);
+    }
+
+    public void playerWon(){
+        Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.WINNER_KEY, "Player");
+        intent.putExtras(bundle);
+        GameActivity.this.startActivity(intent);
+    }
+
+    public void rivalWon(){
+        Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.WINNER_KEY, "Rival");
+        intent.putExtras(bundle);
+        GameActivity.this.startActivity(intent);
     }
 
     private void showLoader(){

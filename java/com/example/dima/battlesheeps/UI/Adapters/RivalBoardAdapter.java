@@ -44,11 +44,7 @@ public class RivalBoardAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         RivalTileView tileView;
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
             tileView = new RivalTileView(mContext);
-            //textView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            //textView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            //textView.setPadding(8, 8, 8, 8);
         } else {
             tileView = (RivalTileView) convertView;
         }

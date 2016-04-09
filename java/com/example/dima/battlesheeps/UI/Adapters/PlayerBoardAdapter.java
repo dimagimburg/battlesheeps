@@ -9,11 +9,8 @@ import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Utils.Utils;
 import com.example.dima.battlesheeps.UI.Views.PlayerTileView;
-import com.example.dima.battlesheeps.UI.Views.RivalTileView;
 
 import java.util.HashMap;
-
-import static com.example.dima.battlesheeps.UI.Utils.Utils.getCoordinateByPosition;
 
 public class PlayerBoardAdapter extends BaseAdapter {
 
@@ -45,11 +42,7 @@ public class PlayerBoardAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         PlayerTileView tileView;
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
             tileView = new PlayerTileView(mContext);
-            //textView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            //textView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            //textView.setPadding(8, 8, 8, 8);
         } else {
             tileView = (PlayerTileView) convertView;
         }
@@ -58,7 +51,11 @@ public class PlayerBoardAdapter extends BaseAdapter {
         String tileStatus = mGame.getPlayerTileStatus(coordinate.get("x"), coordinate.get("y"));
 
         if(tileStatus.equals("Free") || tileStatus.equals("Occupied")){
-            tileView.setImageResource(R.drawable.field);
+            if(!tileStatus.equals("Free")){
+                tileView.setImageResource(R.drawable.players_field_sheep);
+            } else {
+                tileView.setImageResource(R.drawable.field);
+            }
         } else {
             switch (tileStatus) {
                 case "Hit":
