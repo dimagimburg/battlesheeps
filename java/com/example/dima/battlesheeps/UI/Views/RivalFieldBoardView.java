@@ -25,13 +25,11 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
     private Game mGame;
     private GameActivity mContext;
     RivalBoardAdapter adapter;
-    Vector<GameActivityRivalFieldListener> listeners = new Vector<>();
 
     public RivalFieldBoardView(Context context) {
         super(context);
         mContext = (GameActivity) context;
         mContext.registerGameActivityRivalEventListener(this);
-        this.setBackgroundColor(0xAABBAA00);
         this.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         setClickListeners(this);
     }
@@ -43,39 +41,11 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
         this.setNumColumns(mGame.getBoardSize());
     }
 
-    public void registerGameActivityRivalEventListener(GameActivityRivalFieldListener l){
-        listeners.add(l);
-    }
-
     private void setClickListeners(GridView gv){
         gv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Log.e(TAG, "tile clicked at position " + position);
                 HashMap<String, Integer> coordinates = getCoordinateByPosition(position, mGame.getBoardSize());
-
                 mContext.playerPlays(coordinates.get("x"), coordinates.get("y"));
-
-                //mGame.playersPlay(coordinates.get("x"), coordinates.get("y"));
-
-                /*
-                HashMap<String, Integer> coordinates = getCoordinateByPosition(position, mGame.getBoardSize());
-                String status = mGame.playersPlay(coordinates.get("x"), coordinates.get("y"));
-                switch (status) {
-                    case "Miss":
-                        v.setBackgroundColor(Color.RED);
-                        break;
-                    case "Hit":
-                        v.setBackgroundColor(Color.GREEN);
-                        break;
-                    case "Sunk":
-                        v.setBackgroundColor(Color.YELLOW);
-                        break;
-                }
-                */
-
-
-                //TextView tv = (TextView) v;
-                //tv.setText(status);
             }
         });
     }

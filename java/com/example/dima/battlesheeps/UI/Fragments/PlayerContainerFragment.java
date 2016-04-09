@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
-import com.example.dima.battlesheeps.UI.Views.PlayerBoardView;
+import com.example.dima.battlesheeps.UI.Views.PlayerFieldBoardView;
 
 
 public class PlayerContainerFragment extends Fragment {
@@ -24,7 +24,7 @@ public class PlayerContainerFragment extends Fragment {
         RelativeLayout playerContainer = (RelativeLayout) v.findViewById(R.id.playerFieldContainer);
         Bundle args = getArguments();
         mGame = (Game) args.getSerializable("game");
-        PlayerBoardView boardView = new PlayerBoardView(getActivity());
+        PlayerFieldBoardView boardView = new PlayerFieldBoardView(getActivity());
         boardView.init(mGame);
         playerContainer.addView(boardView);
         return v;

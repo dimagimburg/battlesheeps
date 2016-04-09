@@ -1,17 +1,12 @@
 package com.example.dima.battlesheeps.UI.Adapters;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
-import com.example.dima.battlesheeps.UI.Views.PlayerFieldRegularView;
-import com.example.dima.battlesheeps.UI.Views.PlayerShipRegularView;
+import com.example.dima.battlesheeps.UI.Views.PlayerTileView;
 
 import java.util.HashMap;
 
@@ -46,22 +41,22 @@ public class PlayerBoardAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         HashMap<String, Integer> coordinates = getCoordinateByPosition(position, mGame.getBoardSize());
-        View tileView;
+        PlayerTileView tileView;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             if(mGame.getPlayerIsFreeByCoordinate(coordinates.get("x"), coordinates.get("y"))){
-                tileView = new PlayerFieldRegularView(mContext);
+                tileView = new PlayerTileView(mContext);
             } else {
-                tileView = new PlayerShipRegularView(mContext);
+                tileView = new PlayerTileView(mContext);
             }
             //textView.setLayoutParams(new GridView.LayoutParams(85, 85));
             //textView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             //textView.setPadding(8, 8, 8, 8);
         } else {
             if(mGame.getPlayerIsFreeByCoordinate(coordinates.get("x"), coordinates.get("y"))){
-                tileView = (PlayerFieldRegularView) convertView;
+                tileView = (PlayerTileView) convertView;
             } else {
-                tileView = (PlayerShipRegularView) convertView;
+                tileView = (PlayerTileView) convertView;
             }
         }
 

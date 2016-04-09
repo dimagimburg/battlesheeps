@@ -99,8 +99,7 @@ public class Board implements Serializable {
                             board[coordX + k][coordY].setShip(newship);
                             board[coordX + k][coordY].setFree(false);
                             board[coordX + k][coordY].setStatus("Occupied");
-                        }
-                        else {
+                        } else {
                             board[coordX][coordY + k].setShip(newship);
                             board[coordX][coordY + k].setFree(false);
                             board[coordX][coordY + k].setStatus("Occupied");
@@ -123,9 +122,18 @@ public class Board implements Serializable {
             }
             else {
                 board[coordX][coordY].getmShip().addHit();//add hit to ship
+                board[coordX][coordY].getmShip().addX(coordX);
+                board[coordX][coordY].getmShip().addY(coordY);
                 if (board[coordX][coordY].getmShip().isSunk()) {//last hit on the ship== ship sunk
                     mShipLeft--;
                     board[coordX][coordY].setStatus("Sunk");
+                    int x,y;
+                    for (int i = 0; i < board[coordX][coordY].getmShip().getSize(); i++) {
+                        x=board[coordX][coordY].getmShip().getX(i);
+                        y=board[coordX][coordY].getmShip().getY(i);
+                        board[x][y].setStatus("Sunk");
+
+                    }
                     if (mShipLeft==0)
                         return "Win";
                     else {

@@ -7,15 +7,23 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.dima.battlesheeps.UI.Activities.GameActivity">
+    tools:context="com.example.dima.battlesheeps.UI.Activities.GameActivity"
+    android:padding="0dp">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Who&apos;s Turn?"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:text="Your turn"
         android:id="@+id/Turn"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="#5867be"
+        android:layout_alignParentBottom="false"
+        android:textColor="#ffffff" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -40,21 +48,20 @@
             android:layout_weight="5"
             android:background="#da2c2c"
             android:id="@+id/bottomField"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:padding="5dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/playerDetails"
-                android:layout_weight="1"
-                android:background="#c00e79" />
+                android:layout_weight="1" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/playerField"
-                android:background="#3b67c7"
                 android:padding="0dp"
                 android:paddingLeft="0dp"
                 android:paddingTop="0dp"
@@ -63,6 +70,30 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#90ffffff"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rival&apos;s Turn"
+            android:id="@+id/rivals_turn_title"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:textSize="30dp" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
 
 </RelativeLayout>
