@@ -78,7 +78,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NUM_DEAD"
+                            android:text="0"
                             android:id="@+id/sheeps_dead"
                             android:layout_marginTop="55dp"
                             android:layout_toRightOf="@+id/textView4"

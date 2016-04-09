@@ -64,6 +64,16 @@ public class Game implements Serializable {
         return isComputerWon;
     }
 
+    public int getNumberOfRivalSheeps(){
+        int count = 0;
+        for(int i = 0; i < mComputerBoard.getSize() * mComputerBoard.getSize(); i++){
+            if(!mComputerBoard.getTileStatus((int) (i / mComputerBoard.getSize()), i % mComputerBoard.getSize()).equals("Free")){
+                count++;
+            }
+        }
+        return count;
+    }
+
 
     public String computerPlay() {
         coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate

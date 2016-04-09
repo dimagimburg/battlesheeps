@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.Controllers.BattleFieldController;
@@ -29,6 +30,8 @@ public class GameActivity extends AppCompatActivity{
     private Vector<GameActivityRivalFieldListener> mRivalFieldListeners = new Vector<>();
     private Vector<GameActivityPlayerFieldListener> mPlayerFieldListeners = new Vector<>();
     private BattleFieldController mController;
+    private int shipsCounter;
+    private int sheepsDead = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +42,14 @@ public class GameActivity extends AppCompatActivity{
         } catch (NullPointerException e){
             Log.e(TAG, e.getMessage() + " [ no setting with key : " + Constants.SETTINGS_DIFFICULTY_KEY + " ]");
         }
+
         mController = new BattleFieldController(mGame, this);
         setContentView(R.layout.activity_game);
+
+        TextView v = (TextView) findViewById(R.id.sheeps_left);
+        shipsCounter = mGame.getNumberOfRivalSheeps();
+        v.setText(shipsCounter + "");
+
         if (savedInstanceState == null) {
             Bundle args = new Bundle();
             args.putSerializable("game", mGame);
@@ -92,8 +101,6 @@ public class GameActivity extends AppCompatActivity{
         for(BattleFieldActivityEvenListener l : mMCVListeners){
             l.rivalPlays();
         }
-        //View v = findViewById(R.id.loader);
-        //v.setVisibility(View.VISIBLE);
     }
 
     public void playerPlays(int x, int y) {
@@ -128,6 +135,14 @@ public class GameActivity extends AppCompatActivity{
 
     public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon) {
         firePlayerPlayed(x, y, status, isGameOver, playerWon, rivalWon);
+        if(status.equals("Hit") || status.equals("Sunk")){
+            shipsCounter--;
+            sheepsDead++;
+            TextView tv1 = (TextView) findViewById(R.id.sheeps_dead);
+            tv1.setText(sheepsDead + "");
+            TextView tv2 = (TextView) findViewById(R.id.sheeps_left);
+            tv2.setText(shipsCounter + "");
+        }
         showLoader();
         Runnable r = new Runnable() {
             @Override
