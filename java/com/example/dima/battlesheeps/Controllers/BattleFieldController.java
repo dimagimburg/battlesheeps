@@ -44,7 +44,8 @@ public class BattleFieldController implements GameEventListener, BattleFieldActi
         boolean gameOver = mGame.isGameOver();
         boolean playerWins = mGame.isPlayerWinner();
         boolean rivalWins = mGame.isComputerWinner();
-        mGameActivity.onPlayerPlayed(x, y, status, gameOver, playerWins, rivalWins);
+        int[] shipCount = mGame.ComputerShipsLeft();
+        mGameActivity.onPlayerPlayed(x, y, status, gameOver, playerWins, rivalWins, shipCount);
     }
 
     @Override

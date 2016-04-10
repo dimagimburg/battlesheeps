@@ -10,9 +10,10 @@ import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Utils.Utils;
 import com.example.dima.battlesheeps.UI.Views.PlayerTileView;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class PlayerBoardAdapter extends BaseAdapter {
+public class PlayerBoardAdapter extends BaseAdapter implements Serializable {
 
     private Context mContext;
 

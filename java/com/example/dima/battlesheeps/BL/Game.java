@@ -64,6 +64,31 @@ public class Game implements Serializable {
         return isComputerWon;
     }
 
+    public int[] PlayerShipsLeft(){
+        return ShipsLeft(mPlayerBoard);
+    }
+
+    public int[] ComputerShipsLeft(){
+        return ShipsLeft(mComputerBoard);
+    }
+
+    private int[] ShipsLeft(Board board){
+        int[] numOfShips = {0,0,0,0};
+        for (Ship ship : board.getShips()) {
+            if(!ship.isSunk()){
+                if(ship.getSize()==1)
+                    numOfShips[0]++;
+                else if(ship.getSize()==2)
+                    numOfShips[1]++;
+                else if(ship.getSize()==3)
+                    numOfShips[2]++;
+                else
+                    numOfShips[3]++;
+            }
+        }
+        return numOfShips;
+    }
+
     public int getNumberOfRivalSheeps(){
         int count = 0;
         for(int i = 0; i < mComputerBoard.getSize() * mComputerBoard.getSize(); i++){

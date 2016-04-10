@@ -123,7 +123,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
+                                android:text="4 x"
                                 android:id="@+id/ship_1"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentStart="true"
@@ -147,7 +147,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
+                                android:text="3 x"
                                 android:id="@+id/ship_2"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentStart="true" />
@@ -170,7 +170,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
+                                android:text="2 x"
                                 android:id="@+id/ship_3"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentStart="true" />
@@ -193,7 +193,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
+                                android:text="1 x"
                                 android:id="@+id/ship_4"
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentStart="true" />

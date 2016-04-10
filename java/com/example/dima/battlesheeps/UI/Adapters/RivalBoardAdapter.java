@@ -1,6 +1,7 @@
 package com.example.dima.battlesheeps.UI.Adapters;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,9 +13,10 @@ import com.example.dima.battlesheeps.UI.Utils.Utils;
 import com.example.dima.battlesheeps.UI.Views.PlayerTileView;
 import com.example.dima.battlesheeps.UI.Views.RivalTileView;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class RivalBoardAdapter extends BaseAdapter {
+public class RivalBoardAdapter extends BaseAdapter implements Serializable {
 
     private Context mContext;
 
@@ -43,14 +45,16 @@ public class RivalBoardAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         RivalTileView tileView;
+
+        HashMap<String, Integer> coordinate = Utils.getCoordinateByPosition(position, (int) Math.sqrt(getCount()));
+        String tileStatus = mGame.getComputerTileStatus(coordinate.get("x"),coordinate.get("y"));
+
         if (convertView == null) {
             tileView = new RivalTileView(mContext);
         } else {
             tileView = (RivalTileView) convertView;
         }
 
-        HashMap<String, Integer> coordinate = Utils.getCoordinateByPosition(position, (int) Math.sqrt(getCount()));
-        String tileStatus = mGame.getComputerTileStatus(coordinate.get("x"),coordinate.get("y"));
 
         if(tileStatus.equals("Free") || tileStatus.equals("Occupied")){
             tileView.setImageResource(R.drawable.field);
@@ -72,5 +76,7 @@ public class RivalBoardAdapter extends BaseAdapter {
         tileView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (parent.getHeight() / Math.sqrt(getCount()))));
         return tileView;
     }
+
+
 
 }

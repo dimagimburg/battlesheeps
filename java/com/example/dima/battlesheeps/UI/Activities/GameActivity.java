@@ -18,10 +18,11 @@ import com.example.dima.battlesheeps.UI.Fragments.RivalContainerFragment;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityPlayerFieldListener;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityRivalFieldListener;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Vector;
 
-public class GameActivity extends AppCompatActivity{
+public class GameActivity extends AppCompatActivity implements Serializable{
 
     private final String TAG = "GameActivity";
 
@@ -85,9 +86,9 @@ public class GameActivity extends AppCompatActivity{
         }
     }
 
-    private void firePlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon){
+    private void firePlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon, int[] shipCount){
         for(GameActivityRivalFieldListener l : mRivalFieldListeners){
-            l.onPlayerPlayed(x, y, status, isGameOver, playerWon, rivalWon);
+            l.onPlayerPlayed(x, y, status, isGameOver, playerWon, rivalWon, shipCount);
         }
     }
 
@@ -133,8 +134,8 @@ public class GameActivity extends AppCompatActivity{
         v.setVisibility(View.INVISIBLE);
     }
 
-    public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon) {
-        firePlayerPlayed(x, y, status, isGameOver, playerWon, rivalWon);
+    public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon, int[] shipCount) {
+        firePlayerPlayed(x, y, status, isGameOver, playerWon, rivalWon, shipCount);
         if(status.equals("Hit") || status.equals("Sunk")){
             shipsCounter--;
             sheepsDead++;

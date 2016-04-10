@@ -16,13 +16,14 @@ import com.example.dima.battlesheeps.UI.Activities.GameActivity;
 import com.example.dima.battlesheeps.UI.Adapters.PlayerBoardAdapter;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityPlayerFieldListener;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
 import static com.example.dima.battlesheeps.UI.Utils.Utils.getCoordinateByPosition;
 
-public class PlayerFieldBoardView extends GridView implements GameActivityPlayerFieldListener {
+public class PlayerFieldBoardView extends GridView implements GameActivityPlayerFieldListener, Serializable {
 
     private Game mGame;
     private GameActivity mContext;

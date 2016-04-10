@@ -7,18 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
+import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Activities.GameActivity;
 import com.example.dima.battlesheeps.UI.Adapters.RivalBoardAdapter;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityRivalFieldListener;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Vector;
 
 import static com.example.dima.battlesheeps.UI.Utils.Utils.getCoordinateByPosition;
 
-public class RivalFieldBoardView extends GridView implements GameActivityRivalFieldListener {
+public class RivalFieldBoardView extends GridView implements GameActivityRivalFieldListener, Serializable {
 
     private final String TAG = "RivalFieldBoardView";
 
@@ -54,8 +57,17 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
     }
 
     @Override
-    public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean isPlayerWon, boolean isRivalWon) {
+    public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean isPlayerWon, boolean isRivalWon, int[] shipCount) {
         adapter.notifyDataSetChanged();
+        TextView vShipFour = (TextView) mContext.findViewById(R.id.ship_4);
+        TextView vShipThree = (TextView) mContext.findViewById(R.id.ship_3);
+        TextView vShipTwo = (TextView) mContext.findViewById(R.id.ship_2);
+        TextView vShipOne = (TextView) mContext.findViewById(R.id.ship_1);
+
+        vShipFour.setText(shipCount[3] + " x");
+        vShipThree.setText(shipCount[2] + " x");
+        vShipTwo.setText(shipCount[1] + " x");
+        vShipOne.setText(shipCount[0] + " x");
         if(isGameOver && isPlayerWon){
             mContext.playerWon();
         }

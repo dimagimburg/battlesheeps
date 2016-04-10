@@ -1,6 +1,7 @@
 package com.example.dima.battlesheeps.BL;
 //package battleship;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -10,6 +11,7 @@ public class Board implements Serializable {
     private int mSize; //board size
     private int[] mShipNumbers; //how much ships per type
     private int mShipLeft; //ship left on board
+    private ArrayList<Ship> Ships = new ArrayList<>();
     //private ArrayList<String> mShipNames = new ArrayList<String>();
     //private ArrayList<Integer> mShipNumbers = new ArrayList<Integer>();
     private String[] mShipNames={"Lieutenant","Sergeant","Corporal","Private"};
@@ -22,6 +24,9 @@ public class Board implements Serializable {
 
     public int getSize() {
         return mSize;
+    }
+    public ArrayList<Ship> getShips() {
+        return Ships;
     }
     public String getTileStatus(int coordX,int coordY) {
         return board[coordX][coordY].getStatus();
@@ -52,6 +57,7 @@ public class Board implements Serializable {
             for(int j=0;j<mShipNumbers[num];j++) {
                 int ShipSize = num-j+1;
                 Ship newship = new Ship(mShipNames[num-j], ShipSize);
+                Ships.add(newship);
                 finished=false;
                 tileFree=true;
                 while (!finished) {
@@ -99,7 +105,8 @@ public class Board implements Serializable {
                             board[coordX + k][coordY].setShip(newship);
                             board[coordX + k][coordY].setFree(false);
                             board[coordX + k][coordY].setStatus("Occupied");
-                        } else {
+                        }
+                        else {
                             board[coordX][coordY + k].setShip(newship);
                             board[coordX][coordY + k].setFree(false);
                             board[coordX][coordY + k].setStatus("Occupied");
