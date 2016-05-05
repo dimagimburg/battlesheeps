@@ -1,45 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     tools:context=".UI.Activities.MainActivity"
     android:padding="0dp"
+    android:weightSum="20"
     android:background="#0065cb">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:id="@+id/imageView9"
         android:src="@drawable/login_bg"
-        android:padding="0dp"
-        android:scaleType="fitCenter"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="25dp" />
+        android:layout_weight="2" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_weight="6"
+        android:weightSum="10"
+        android:background="#3387db"
+        android:id="@+id/difficultyButton">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Difficulty:"
+                android:id="@+id/difficultyStaticText"
+                android:layout_weight="5"
+                android:gravity="center_vertical|right"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Baby Sheep"
+                android:id="@+id/difficultyText"
+                android:gravity="left|center_vertical"
+                android:layout_weight="5"
+                android:textColor="#ffffff"
+                android:paddingLeft="5dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:id="@+id/difficultyImage"
+            android:layout_weight="8"
+            android:src="@drawable/difficulty_0"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Fight"
         android:id="@+id/startGameButton"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:layout_alignEnd="@+id/difficultyButton"
-        android:layout_alignStart="@+id/difficultyButton"
-        android:background="#6098b8" />
+        android:background="#69a2db"
+        android:layout_weight="6"
+        android:textColor="#ffffff" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose Difficulty"
-        android:id="@+id/difficultyButton"
-        android:layout_above="@+id/startGameButton"
-        android:layout_alignStart="@+id/imageView9"
-        android:layout_alignEnd="@+id/imageView9"
-        android:background="#508ecc" />
-</RelativeLayout>
+        android:text="High Scores"
+        android:id="@+id/button"
+        android:layout_weight="6"
+        android:background="#97bbe0"
+        android:textColor="#ffffff" />
+
+</LinearLayout>

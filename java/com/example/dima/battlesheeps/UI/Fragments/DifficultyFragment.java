@@ -35,14 +35,14 @@ public class DifficultyFragment extends DialogFragment {
 
     private void setCurrentDificultyonView(RadioGroup rg){
         switch(getCurrentDifficulty()){
-            case 1:
+            case 0:
             default:
                 rg.check(R.id.amateur);
                 break;
-            case 2:
+            case 1:
                 rg.check(R.id.advanced);
                 break;
-            case 3:
+            case 2:
                 rg.check(R.id.hard);
                 break;
         }
