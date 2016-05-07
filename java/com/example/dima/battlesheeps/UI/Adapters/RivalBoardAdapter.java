@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
+import com.example.dima.battlesheeps.UI.Constants.Constants;
 import com.example.dima.battlesheeps.UI.Utils.Utils;
 import com.example.dima.battlesheeps.UI.Views.PlayerTileView;
 import com.example.dima.battlesheeps.UI.Views.RivalTileView;
@@ -73,7 +74,7 @@ public class RivalBoardAdapter extends BaseAdapter implements Serializable {
 
         }
 
-        tileView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (parent.getHeight() / Math.sqrt(getCount()))));
+        tileView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) ((parent.getHeight() - (2 * Constants.RIVAL_BOARD_PADDING))  / Math.sqrt(getCount()))));
         return tileView;
     }
 

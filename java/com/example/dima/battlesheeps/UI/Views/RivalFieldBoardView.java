@@ -13,6 +13,7 @@ import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Activities.GameActivity;
 import com.example.dima.battlesheeps.UI.Adapters.RivalBoardAdapter;
+import com.example.dima.battlesheeps.UI.Constants.Constants;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityRivalFieldListener;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
         mContext = (GameActivity) context;
         mContext.registerGameActivityRivalEventListener(this);
         this.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        this.setPadding(Constants.RIVAL_BOARD_PADDING, Constants.RIVAL_BOARD_PADDING, Constants.RIVAL_BOARD_PADDING, Constants.RIVAL_BOARD_PADDING);
         setClickListeners(this);
     }
 
@@ -49,7 +51,7 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 HashMap<String, Integer> coordinates = getCoordinateByPosition(position, mGame.getBoardSize());
                 String tileStatus = mGame.getComputerTileStatus(coordinates.get("x"), coordinates.get("y"));
-                if(!(tileStatus.equals("Hit") || tileStatus.equals("Miss") || tileStatus.equals("Sunk"))){
+                if (!(tileStatus.equals("Hit") || tileStatus.equals("Miss") || tileStatus.equals("Sunk"))) {
                     mContext.playerPlays(coordinates.get("x"), coordinates.get("y"));
                 }
             }
@@ -59,15 +61,15 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
     @Override
     public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean isPlayerWon, boolean isRivalWon, int[] shipCount) {
         adapter.notifyDataSetChanged();
-        TextView vShipFour = (TextView) mContext.findViewById(R.id.ship_4);
-        TextView vShipThree = (TextView) mContext.findViewById(R.id.ship_3);
-        TextView vShipTwo = (TextView) mContext.findViewById(R.id.ship_2);
-        TextView vShipOne = (TextView) mContext.findViewById(R.id.ship_1);
+        TextView vShipFour = (TextView) mContext.findViewById(R.id.numberOfSheeps_4);
+        TextView vShipThree = (TextView) mContext.findViewById(R.id.numberOfSheeps_3);
+        TextView vShipTwo = (TextView) mContext.findViewById(R.id.numberOfSheeps_2);
+        TextView vShipOne = (TextView) mContext.findViewById(R.id.numberOfSheeps_1);
 
-        vShipFour.setText(shipCount[3] + " x");
-        vShipThree.setText(shipCount[2] + " x");
-        vShipTwo.setText(shipCount[1] + " x");
-        vShipOne.setText(shipCount[0] + " x");
+        vShipFour.setText(shipCount[3] + "");
+        vShipThree.setText(shipCount[2] + "");
+        vShipTwo.setText(shipCount[1] + "");
+        vShipOne.setText(shipCount[0] + "");
         if(isGameOver && isPlayerWon){
             mContext.playerWon();
         }

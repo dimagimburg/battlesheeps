@@ -1,11 +1,14 @@
 package com.example.dima.battlesheeps.UI.Activities;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
@@ -47,26 +50,29 @@ public class GameActivity extends AppCompatActivity implements Serializable{
         mController = new BattleFieldController(mGame, this);
         setContentView(R.layout.activity_game);
 
-        TextView v = (TextView) findViewById(R.id.sheeps_left);
+        TextView v = (TextView) findViewById(R.id.remainngSheepsCount);
         shipsCounter = mGame.getNumberOfRivalSheeps();
         v.setText(shipsCounter + "");
+
 
         if (savedInstanceState == null) {
             Bundle args = new Bundle();
             args.putSerializable("game", mGame);
 
-            FragmentTransaction ftPlayer = getFragmentManager().beginTransaction();
-            PlayerContainerFragment playerContainerFragment = new PlayerContainerFragment();
-            playerContainerFragment.setArguments(args);
-            ftPlayer.add(R.id.playerField, playerContainerFragment).commit();
-
             FragmentTransaction ftRival = getFragmentManager().beginTransaction();
             RivalContainerFragment rivalContainerFragment = new RivalContainerFragment();
             rivalContainerFragment.setArguments(args);
-            ftRival.add(R.id.rivalField, rivalContainerFragment).commit();
+            ftRival.add(R.id.rivalFieldWrapper, rivalContainerFragment).commit();
+
+            FragmentTransaction ftPlayer = getFragmentManager().beginTransaction();
+            PlayerContainerFragment playerContainerFragment = new PlayerContainerFragment();
+            playerContainerFragment.setArguments(args);
+            ftPlayer.add(R.id.playerFieldWrapper, playerContainerFragment).commit();
 
         }
     }
+
+
 
     public void registerBattleFieldActivityListener(BattleFieldActivityEvenListener l){
         mMCVListeners.add(l);
@@ -139,9 +145,9 @@ public class GameActivity extends AppCompatActivity implements Serializable{
         if(status.equals("Hit") || status.equals("Sunk")){
             shipsCounter--;
             sheepsDead++;
-            TextView tv1 = (TextView) findViewById(R.id.sheeps_dead);
+            TextView tv1 = (TextView) findViewById(R.id.deadSheepsCount);
             tv1.setText(sheepsDead + "");
-            TextView tv2 = (TextView) findViewById(R.id.sheeps_left);
+            TextView tv2 = (TextView) findViewById(R.id.remainngSheepsCount);
             tv2.setText(shipsCounter + "");
         }
         showLoader();

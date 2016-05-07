@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.dima.battlesheeps.BL.Game;
@@ -15,18 +17,14 @@ public class RivalContainerFragment extends Fragment {
 
     public RivalContainerFragment(){}
 
-    private Game mGame;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.rival_field_container, container, false);
-        RelativeLayout playerContainer = (RelativeLayout) v.findViewById(R.id.rivalFieldContainer);
         Bundle args = getArguments();
-        mGame = (Game) args.getSerializable("game");
+        Game mGame = (Game) args.getSerializable("game");
         RivalFieldBoardView boardView = new RivalFieldBoardView(getActivity());
+        boardView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, GridView.LayoutParams.MATCH_PARENT));
         boardView.init(mGame);
-        playerContainer.addView(boardView);
-        return v;
+        return boardView;
     }
 
 }

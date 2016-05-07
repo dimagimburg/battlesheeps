@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.UI.Activities.GameActivity;
 import com.example.dima.battlesheeps.UI.Adapters.PlayerBoardAdapter;
+import com.example.dima.battlesheeps.UI.Constants.Constants;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityPlayerFieldListener;
 
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class PlayerFieldBoardView extends GridView implements GameActivityPlayer
         super(context);
         mContext = (GameActivity) context;
         mContext.registerGameActivityPlayerEventListener(this);
+        this.setPadding(Constants.PLAYER_BOARD_PADDING, Constants.PLAYER_BOARD_PADDING, Constants.PLAYER_BOARD_PADDING, Constants.PLAYER_BOARD_PADDING);
         this.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 

@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 
 import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
+import com.example.dima.battlesheeps.UI.Constants.Constants;
 import com.example.dima.battlesheeps.UI.Utils.Utils;
 import com.example.dima.battlesheeps.UI.Views.PlayerTileView;
 
@@ -71,7 +72,7 @@ public class PlayerBoardAdapter extends BaseAdapter implements Serializable {
             }
         }
 
-        tileView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (parent.getHeight() / Math.sqrt(getCount()))));
+        tileView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) ((parent.getHeight() - (2 * Constants.PLAYER_BOARD_PADDING)) / Math.sqrt(getCount()))));
         return tileView;
     }
 }

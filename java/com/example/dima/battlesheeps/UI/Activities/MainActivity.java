@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,8 +16,6 @@ import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Fragments.DifficultyFragment;
 import com.example.dima.battlesheeps.UI.UIListeners.MainActivityDifficultyDialogListener;
 import com.example.dima.battlesheeps.UI.Constants.Constants;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -73,7 +73,7 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
     }
 
     private void initSettings(){
-        mSettings.put(Constants.SETTINGS_DIFFICULTY_KEY,"0");
+        mSettings.put(Constants.SETTINGS_DIFFICULTY_KEY, "0");
     }
 
     public void setNewDifficultyOnView(int newDifficulty){
@@ -98,5 +98,28 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
         }
         diffImage.setImageResource(imageId);
         diffText.setText(difficultyText);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initLoginAnimation();
+    }
+
+    private void initLoginAnimation(){
+        ImageView bandanaImage = (ImageView) findViewById(R.id.login_bandana);
+        ImageView glassesImage = (ImageView) findViewById(R.id.login_glasses);
+        ImageView ciggarImage = (ImageView) findViewById(R.id.login_ciggar);
+        ImageView gunImage = (ImageView) findViewById(R.id.login_machinegun);
+
+        Animation bandanaAnimation = AnimationUtils.loadAnimation(this, R.anim.bandana_move);
+        Animation glassesAnimation = AnimationUtils.loadAnimation(this, R.anim.glasses_move);
+        Animation ciggarAnimation = AnimationUtils.loadAnimation(this, R.anim.ciggar_move);
+        Animation gunAnimation = AnimationUtils.loadAnimation(this, R.anim.machinegun_move);
+
+        bandanaImage.startAnimation(bandanaAnimation);
+        glassesImage.startAnimation(glassesAnimation);
+        ciggarImage.startAnimation(ciggarAnimation);
+        gunImage.startAnimation(gunAnimation);
     }
 }
