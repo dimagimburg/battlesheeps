@@ -72,8 +72,6 @@ public class GameActivity extends AppCompatActivity implements Serializable{
         }
     }
 
-
-
     public void registerBattleFieldActivityListener(BattleFieldActivityEvenListener l){
         mMCVListeners.add(l);
     }
