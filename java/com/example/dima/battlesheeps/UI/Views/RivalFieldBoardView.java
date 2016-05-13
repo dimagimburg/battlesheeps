@@ -103,11 +103,13 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
         final ImageView missle = new ImageView(mContext);
         missle.setId(R.id.missle);
         missle.setImageResource(R.drawable.missile);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 150);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150, 150);
         int marginLeft = (int) (Math.random() * getWidth());
         int marginTop = (int) (Math.random() * getHeight());
         layoutParams.setMargins(marginLeft, marginTop, 0, 0);
         missle.setLayoutParams(layoutParams);
+        missle.getLayoutParams().height = 150;
+        missle.getLayoutParams().width = 150;
 
         int a = x - marginLeft;
         int b = marginTop - y;
@@ -118,8 +120,8 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
         rl.addView(missle);
 
 
-        TranslateAnimation ta = new TranslateAnimation(0, x - marginLeft - 150, 0, y - marginTop - 50);
-        int duration = (int) (Math.random() * 3000);
+        TranslateAnimation ta = new TranslateAnimation(0, x - marginLeft - 75, 0, y - marginTop - 75);
+        int duration = (int) ((Math.random() * 1000) + 200);
         ta.setDuration(duration);
         ta.setStartOffset(500);
         ta.setAnimationListener(new Animation.AnimationListener() {

@@ -148,6 +148,9 @@ public class GameActivity extends AppCompatActivity implements Serializable{
             TextView tv2 = (TextView) findViewById(R.id.remainngSheepsCount);
             tv2.setText(shipsCounter + "");
         }
+
+        
+
         showLoader();
         Runnable r = new Runnable() {
             @Override
