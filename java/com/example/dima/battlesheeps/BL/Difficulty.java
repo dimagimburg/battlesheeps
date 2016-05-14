@@ -11,6 +11,15 @@ public class Difficulty implements Serializable {
     }
 
     private mDifficultyEnum mName;
+
+    public int getDifficulty() {
+        return mDifficulty;
+    }
+
+    public void setmDifficulty(int mDifficulty) {
+        this.mDifficulty = mDifficulty;
+    }
+
     private int mDifficulty;
     private int mBoardSize;
     public Difficulty(int difficulty){

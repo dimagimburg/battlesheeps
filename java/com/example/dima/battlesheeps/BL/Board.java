@@ -37,6 +37,172 @@ public class Board implements Serializable {
             sum+=i;
         return sum;
     }
+    private void shuffleShip() {
+        Random r = new Random();
+        int numOfShip=r.nextInt(Ships.size());
+        int x,y;
+        Ship ship=Ships.get(numOfShip);
+        boolean finished1=false;
+        boolean finished2=false;
+        boolean free=false;
+        int direction=0;
+        while (!finished2 && !free) {
+            free=true;
+            finished1=false;
+            finished2=false;
+            direction = r.nextInt(4);//0 up,1 right,2 down,3 left
+            if (direction==0 && ship.getCoordinate(0).getY()>0 || direction==1 && ship.getCoordinate(ship.getSize()).getX()<mSize ||
+                    direction==2 && ship.getCoordinate(ship.getSize()).getY()<mSize || direction==3 && ship.getCoordinate(0).getX()<0) //if the direction selected is valid on the board
+                finished1=true;
+            else finished1=false;
+            if(finished1){ // check that the new place is free
+                if (direction==0){
+                    if(ship.isHorizontal())
+                    for (int i=0;i<ship.getSize() && !finished2;i++){
+                        x=ship.getCoordinate(i).getX();
+                        y=ship.getCoordinate(i).getY();
+                        if(!board[x][y-1].isFree()){
+                            finished2=true;
+                            free=false;
+                        }
+
+                    }
+                    else{
+                        x=ship.getCoordinate(0).getX();
+                        y=ship.getCoordinate(0).getY();
+                        if(!board[x][y-1].isFree()){
+                            finished2=true;
+                            free=false;
+                        }
+                    }
+                }
+                else if (direction==1)
+                    if(!ship.isHorizontal())
+                    for (int i=ship.getSize();i>0 && !finished2;i--){
+                        x=ship.getCoordinate(i).getX();
+                        y=ship.getCoordinate(i).getY();
+                        if(!board[x+1][y].isFree()){
+                            finished2=true;
+                            free=false;
+                        }
+
+                    }
+                else{
+                    x=ship.getCoordinate(0).getX();
+                    y=ship.getCoordinate(0).getY();
+                    if(!board[x+1][y].isFree()){
+                        finished2=true;
+                        free=false;
+                    }
+                }
+                else if (direction==2)
+                    if(ship.isHorizontal())
+                    for (int i=ship.getSize();i>0 && !finished2;i--){
+                        x=ship.getCoordinate(i).getX();
+                        y=ship.getCoordinate(i).getY();
+                        if(!board[x][y+1].isFree()){
+                            finished2=true;
+                            free=false;
+                        }
+
+                    }
+                else{
+                    x=ship.getCoordinate(0).getX();
+                    y=ship.getCoordinate(0).getY();
+                    if(!board[x][y+1].isFree()){
+                        finished2=true;
+                        free=false;
+                    }
+                }
+                else if (direction==3){
+                    if(!ship.isHorizontal())
+                    for (int i=0;i<ship.getSize() && !finished2;i++){
+                        x=ship.getCoordinate(i).getX();
+                        y=ship.getCoordinate(i).getY();
+                        if(!board[x+1][y].isFree()){
+                            finished2=true;
+                            free=false;
+                        }
+
+                    }
+                    else{
+                        x=ship.getCoordinate(0).getX();
+                        y=ship.getCoordinate(0).getY();
+                        if(!board[x+1][y].isFree()){
+                            finished2=true;
+                            free=false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (direction==0){
+            for (int i=0;i<ship.getSize();i++){
+                x=ship.getCoordinate(i).getX();
+                y=ship.getCoordinate(i).getY();
+                board[x][y]=new Tile();
+                ship.setCoordinateY(i,y-1);
+                board[x][y-1].setShip(ship);
+                board[x][y-1].setFree(false);
+                board[x][y-1].setStatus("Occupied");
+            }
+        }
+        else if (direction==1)
+            for (int i=ship.getSize();i>0;i--){
+                x=ship.getCoordinate(i).getX();
+                y=ship.getCoordinate(i).getY();
+                board[x][y]=new Tile();
+                ship.setCoordinateX(i,x+1);
+                board[x+1][y].setShip(ship);
+                board[x+1][y].setFree(false);
+                board[x+1][y].setStatus("Occupied");
+        }
+        else if (direction==2)
+            for (int i=ship.getSize();i>0;i--){
+                x=ship.getCoordinate(i).getX();
+                y=ship.getCoordinate(i).getY();
+                board[x][y]=new Tile();
+                ship.setCoordinateY(i,y+1);
+                board[x][y+1].setShip(ship);
+                board[x][y+1].setFree(false);
+                board[x][y+1].setStatus("Occupied");
+            }
+        else if (direction==3){
+            for (int i=0;i<ship.getSize();i++){
+                x=ship.getCoordinate(i).getX();
+                y=ship.getCoordinate(i).getY();
+                board[x][y]=new Tile();
+                ship.setCoordinateX(i,x-1);
+                board[x-1][y].setShip(ship);
+                board[x-1][y].setFree(false);
+                board[x-1][y].setStatus("Occupied");
+            }
+        }
+
+    }
+    private void decreaseRandomHit() {
+        Random r = new Random();
+        int numOfShip;
+        Ship ship;
+        int index,x,y;
+        boolean finished=false;
+        while(!finished){
+            numOfShip = r.nextInt(Ships.size());
+            ship=Ships.get(numOfShip);
+            if(!ship.isSunk() && ship.getHits()>0){
+                finished=true;
+                ship.decreaseHit();
+                index=r.nextInt(ship.getSize());
+                x=ship.getX(index);
+                y=ship.getY(index);
+                board[x][y].getmShip().deleteX(index);
+                board[x][y].getmShip().deleteY(index);
+                board[x][y].setStatus("Occupied");
+            }
+        }
+
+    }
 
     private void BoardInit(){
         Random r = new Random();
@@ -64,10 +230,12 @@ public class Board implements Serializable {
                     tileFree=true;
                     direction = r.nextBoolean(); //true=right false=down
                     if (direction){
+                        newship.setHorizontal(true);
                         coordX = r.nextInt(mSize - ShipSize); //random x coordinate
                         coordY = r.nextInt(mSize); //random y coordinate
                     }
                     else{
+                        newship.setHorizontal(false);
                         coordX = r.nextInt(mSize); //random x coordinate
                         coordY = r.nextInt(mSize - ShipSize); //random y coordinate
                     }
@@ -102,11 +270,14 @@ public class Board implements Serializable {
 
                     for (int k = 0; k < ShipSize && tileFree; k++) {// if the tiles free allocating the ship
                         if (direction){
+                            newship.addCoordinate(coordX + k,coordY);
                             board[coordX + k][coordY].setShip(newship);
                             board[coordX + k][coordY].setFree(false);
                             board[coordX + k][coordY].setStatus("Occupied");
+
                         }
                         else {
+                            newship.addCoordinate(coordX,coordY + k);
                             board[coordX][coordY + k].setShip(newship);
                             board[coordX][coordY + k].setFree(false);
                             board[coordX][coordY + k].setStatus("Occupied");

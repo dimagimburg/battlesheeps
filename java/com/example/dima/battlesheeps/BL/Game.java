@@ -23,6 +23,7 @@ public class Game implements Serializable {
     private int coordY;
     private String status;
     Random r = new Random();
+    DBHelper dbhelper = new DBHelper(null, "BattleShip", 0);
     private Vector<GameEventListener> mListeners = new Vector<>();
 
     public Game(int difficulty){
@@ -31,7 +32,21 @@ public class Game implements Serializable {
         this.mComputerBoard = new Board(this.mDifficulty.getBoardSize(),mDifficulty.mDefaultShipNumber);
         mPlayer.setGameStatus(false);
     }
+    public boolean isHighScore() {
+        return dbhelper.isHighScore(mDifficulty.getDifficulty(),mPlayer);
+    }
 
+    public void addPlayer() {
+        dbhelper.addPlayer(mDifficulty.getDifficulty(),mPlayer);
+    }
+
+    public void deletelastPlayer() {
+        dbhelper.deletelastPlayer(mDifficulty.getDifficulty(),mPlayer);
+    }
+
+    public String[][] getScoresTable() {
+        return dbhelper.getScoresTable(mDifficulty.getDifficulty());
+    }
     public int getBoardSize() {
         return mPlayerBoard.getSize();
     }
@@ -42,6 +57,7 @@ public class Game implements Serializable {
             mPlayer.addWin();
             mPlayer.setGameStatus(true);
         }
+        mPlayer.addTry();
         return status;
     }
     public String getPlayerTileStatus(int coordX,int coordY) {
@@ -188,120 +204,6 @@ public class Game implements Serializable {
         }
         return status;
 
-        /*Random r = new Random();
-        int coordX;
-        int coordY;
-        String status;
-        coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
-            coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
-        status=mPlayerBoard.Play(coordX,coordY);
-        while (status.equals("fired")){
-            coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
-            coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
-            status=mPlayerBoard.Play(coordX,coordY);
-        }
-        if (status.equals("Win")){
-            mPlayer.addLoss();
-            isComputerWon=false;
-        }
-        return status;*/
-        /*Random r = new Random();
-        int coordX;
-        int coordY;
-        String status=null;
-        //if(mLastHit==null) {
-        if(!isLastTurnHit){
-            coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
-            coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
-        }
-        else{
-
-            if(direction[0]==1&&mLastHit[0]<mPlayerBoard.getSize()){
-                System.out.println(direction[0]);
-                coordX=mLastHit[0]+1;
-                coordY=mLastHit[1];
-            }
-            else if(direction[1]==1&&mLastHit[1]<mPlayerBoard.getSize()){
-                System.out.println(direction[1]);
-                coordX=mLastHit[0];
-                coordY=mLastHit[1]+1;
-            }
-            else if(direction[2]==1&&mLastHit[0]>0){
-                System.out.println(direction[2]);
-                coordX=mLastHit[0]-1;
-                coordY=mLastHit[1];
-            }
-            else if(direction[3]==1&&mLastHit[1]>0){
-                System.out.println(direction[3]);
-                coordX=mLastHit[0];
-                coordY=mLastHit[1]-1;
-            }
-            else{
-                coordX = r.nextInt(mPlayerBoard.getSize()); //random x coordinate
-                coordY = r.nextInt(mPlayerBoard.getSize()); //random y coordinate
-                    }
-        }
-            status=mPlayerBoard.Play(coordX, coordY);
-            if (status.equals("Hit")) {
-                if(!isLastTurnHit){//new hit
-                mLastHit[0] = coordX;
-                mLastHit[1] = coordY;
-                for (int i = 0; i < direction.length; i++) {
-                    direction[i]=1;
-                }
-                }
-                else{ //more than one hit in the row
-                    mLastHit[0] = coordX;
-                    mLastHit[1] = coordY;
-                    try {
-                        if(direction[0]==1){//continie the frivious direction
-                        direction[1]=0;
-                        direction[2]=0;
-                        direction[3]=0;
-                    }
-                    else if(direction[1]==1){
-                        direction[2]=0;
-                        direction[3]=0;
-                    }
-                    else if(direction[2]==1){
-                        direction[3]=0;
-                    }
-                    else
-                        direction[3]=0;
-                    } catch (Exception e) {
-                        direction=new int[4];
-                        direction[0]=0;
-                        direction[1]=0;
-                        direction[2]=0;
-                        direction[3]=0;
-                    }
-                }
-                isLastTurnHit=true;
-            }
-            if (status.equals("fired")){
-                computerPlay();
-            }
-            if (status.equals("Miss")) {
-                if (isLastTurnHit){
-                    if(direction[0]==1)
-                        direction[0]=0;
-                    else if(direction[1]==1)
-                        direction[1]=0;
-                    else if(direction[2]==1)
-                        direction[2]=0;
-                    else
-                        direction[3]=0;
-                }
-                isLastTurnHit=false;
-                mLastHit=new int[2];
-            }
-            if (status.equals("Sunk")){
-                for (int i = 0; i < direction.length; i++) {
-                    direction[i]=0;
-                }
-            }
-            return status;
-        }*/
     }
 
     public Difficulty getDifficulty() {
