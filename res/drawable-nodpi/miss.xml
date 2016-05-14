@@ -25,4 +25,24 @@
         android:duration="100"
         android:drawable="@drawable/miss6"/>
 
+    <item
+        android:duration="100"
+        android:drawable="@drawable/miss7"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/miss8"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/miss9"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/miss10"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/rivals_field_miss"/>
+
 </animation-list>

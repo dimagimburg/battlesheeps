@@ -1,0 +1,32 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/hit1"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/hit2"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/hit3"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/hit4"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/hit5"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/hit6"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/rivals_field_sunk"/>
+
+</animation-list>

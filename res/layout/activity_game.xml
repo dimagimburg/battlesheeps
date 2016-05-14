@@ -29,14 +29,65 @@
                 android:gravity="center_vertical"
                 android:textColor="#ffffff" />
 
-            <TextView
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Score"
-                android:id="@+id/textView4"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:textColor="#ffffff" />
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Score: "
+                        android:id="@+id/textView10"
+                        android:gravity="center_vertical"
+                        android:textColor="#ffffff" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="0"
+                        android:id="@+id/score"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="#ffffff" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Orientation: "
+                        android:id="@+id/textView4"
+                        android:gravity="center_vertical"
+                        android:textColor="#ffffff"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="0"
+                        android:id="@+id/orientationNumber"
+                        android:gravity="center_vertical"
+                        android:textColor="#ffffff"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -288,262 +339,3 @@
     </RelativeLayout>
 
 </RelativeLayout>
-<!--
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.dima.battlesheeps.UI.Activities.GameActivity"
-    android:padding="0dp">
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="25dp"
-        android:text="Your turn"
-        android:id="@+id/Turn"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="#5867be"
-        android:layout_alignParentBottom="false"
-        android:textColor="#ffffff" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/Turn"
-        android:layout_alignParentBottom="true"
-        android:weightSum="8">
-
-        <RelativeLayout
-            android:id="@+id/rivalField"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="3"
-            android:background="#74cc57"
-            android:padding="0dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:id="@+id/bottomField"
-            android:weightSum="2"
-            android:padding="5dp"
-            android:background="#5867bd">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/playerDetails"
-                android:layout_weight="1" >
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:weightSum="10">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sheeps dead:"
-                            android:id="@+id/textView4"
-                            android:textColor="#ffffff" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:id="@+id/sheeps_dead"
-                            android:layout_marginTop="55dp"
-                            android:layout_toRightOf="@+id/textView4"
-                            android:layout_alignBottom="@+id/textView4"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="#ffffff" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sheeps left:"
-                            android:id="@+id/textView6"
-                            android:layout_alignParentTop="false"
-                            android:layout_below="@+id/textView4"
-                            android:textColor="#ffffff" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="NUM_LEFT"
-                            android:id="@+id/sheeps_left"
-                            android:layout_toRightOf="@+id/textView6"
-                            android:layout_alignTop="@+id/textView6"
-                            android:layout_marginLeft="20dp"
-                            android:textColor="#ffffff" />
-
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="9"
-                        android:weightSum="4"
-                        android:paddingTop="5dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="4 x"
-                                android:id="@+id/ship_1"
-                                android:layout_centerVertical="true"
-                                android:layout_alignParentStart="true"
-                                android:singleLine="true" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageView5"
-                                android:layout_centerVertical="true"
-                                android:layout_toEndOf="@+id/ship_1"
-                                android:src="@drawable/ship1" />
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="3 x"
-                                android:id="@+id/ship_2"
-                                android:layout_centerVertical="true"
-                                android:layout_alignParentStart="true" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageView6"
-                                android:src="@drawable/ship2"
-                                android:layout_alignParentTop="true"
-                                android:layout_toEndOf="@+id/ship_2" />
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="2 x"
-                                android:id="@+id/ship_3"
-                                android:layout_centerVertical="true"
-                                android:layout_alignParentStart="true" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageView7"
-                                android:src="@drawable/ship3"
-                                android:layout_alignParentTop="true"
-                                android:layout_toEndOf="@+id/ship_3" />
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1 x"
-                                android:id="@+id/ship_4"
-                                android:layout_centerVertical="true"
-                                android:layout_alignParentStart="true" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageView8"
-                                android:src="@drawable/ship4"
-                                android:layout_alignParentTop="true"
-                                android:layout_toEndOf="@+id/ship_4" />
-
-                        </RelativeLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/playerField"
-                android:padding="0dp"
-                android:paddingLeft="0dp"
-                android:paddingTop="0dp"
-                android:paddingRight="0dp"
-                android:paddingBottom="0dp"></RelativeLayout>
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#a1ffffff"
-        android:visibility="gone"
-        android:id="@+id/loader">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rival&apos;s Turn"
-            android:id="@+id/rivals_turn_title"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:textSize="30dp" />
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:indeterminate="false" />
-
-    </RelativeLayout>
-
-
-</RelativeLayout>
--->

@@ -16,6 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.Activities.GameActivity" />
+        <service android:name="com.example.dima.battlesheeps.UI.Services.OrientationService" >
+        </service>
         <activity
             android:name=".UI.Activities.GameOverActivity"
             android:label="@string/title_activity_game_over"

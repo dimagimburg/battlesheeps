@@ -1,7 +1,10 @@
 package com.example.dima.battlesheeps.UI.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
 import com.example.dima.battlesheeps.R;
+import com.example.dima.battlesheeps.UI.Activities.GameActivity;
 import com.example.dima.battlesheeps.UI.Constants.Constants;
 import com.example.dima.battlesheeps.UI.Utils.Utils;
 import com.example.dima.battlesheeps.UI.Views.PlayerTileView;
@@ -58,20 +62,22 @@ public class RivalBoardAdapter extends BaseAdapter implements Serializable {
 
 
         if(tileStatus.equals("Free") || tileStatus.equals("Occupied")){
-            tileView.setImageResource(R.drawable.field);
+            tileView.setBackgroundResource(R.drawable.field);
         } else {
             switch (tileStatus) {
                 case "Hit":
-                    tileView.setImageResource(R.drawable.rivals_field_hit);
+                    tileView.setBackgroundResource(R.drawable.hit);
+                    ((AnimationDrawable) tileView.getBackground()).start();
                     break;
                 case "Miss":
-                    tileView.setImageResource(R.drawable.rivals_field_miss);
+                    tileView.setBackgroundResource(R.drawable.miss);
+                    ((AnimationDrawable) tileView.getBackground()).start();
                     break;
                 case "Sunk":
-                    tileView.setImageResource(R.drawable.rivals_field_sunk);
+                    tileView.setBackgroundResource(R.drawable.sunk);
+                    ((AnimationDrawable) tileView.getBackground()).start();
                     break;
             }
-
         }
 
         tileView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) ((parent.getHeight() - (2 * Constants.RIVAL_BOARD_PADDING))  / Math.sqrt(getCount()))));

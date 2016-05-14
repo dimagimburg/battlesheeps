@@ -1,14 +1,23 @@
 package com.example.dima.battlesheeps.UI.Activities;
 
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
@@ -18,14 +27,17 @@ import com.example.dima.battlesheeps.R;
 import com.example.dima.battlesheeps.UI.Constants.Constants;
 import com.example.dima.battlesheeps.UI.Fragments.PlayerContainerFragment;
 import com.example.dima.battlesheeps.UI.Fragments.RivalContainerFragment;
+import com.example.dima.battlesheeps.UI.Services.OrientationService;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityPlayerFieldListener;
 import com.example.dima.battlesheeps.UI.UIListeners.GameActivityRivalFieldListener;
+
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Vector;
 
-public class GameActivity extends AppCompatActivity implements Serializable{
+public class GameActivity extends AppCompatActivity implements Serializable,SensorEventListener {
 
     private final String TAG = "GameActivity";
 
@@ -36,13 +48,23 @@ public class GameActivity extends AppCompatActivity implements Serializable{
     private BattleFieldController mController;
     private int shipsCounter;
     private int sheepsDead = 0;
+    private OrientationService orientationService;
+    private boolean mOrientaionServiceBound = false;
+    private SensorManager mSensorManager;
+    private Sensor mOrientation;
+    private float initialOrientation;
+    private int difficulty;
+    BroadcastReceiver receiver;
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         HashMap settings = (HashMap) getIntent().getExtras().getSerializable(Constants.BUNDLE_SETTINGS_KEY);
         try {
-            mGame = new Game(Integer.parseInt((String) settings.get(Constants.SETTINGS_DIFFICULTY_KEY)));
+            difficulty = Integer.parseInt((String) settings.get(Constants.SETTINGS_DIFFICULTY_KEY));
+            mGame = new Game(difficulty);
         } catch (NullPointerException e){
             Log.e(TAG, e.getMessage() + " [ no setting with key : " + Constants.SETTINGS_DIFFICULTY_KEY + " ]");
         }
@@ -70,6 +92,64 @@ public class GameActivity extends AppCompatActivity implements Serializable{
             ftPlayer.add(R.id.playerFieldWrapper, playerContainerFragment).commit();
 
         }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final TextView orientationNumber = (TextView) findViewById(R.id.orientationNumber);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mOrientation = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                float f = intent.getFloatExtra("orientation", 0);
+                float currentOrientation = initialOrientation - f;
+                if(Math.abs(currentOrientation) < Constants.ORIENTATION_DIFF_ACCEPTED / 2){
+                    orientationNumber.setTextColor(Color.GREEN);
+                } else if(Math.abs(currentOrientation) < Constants.ORIENTATION_DIFF_ACCEPTED){
+                    orientationNumber.setTextColor(Color.YELLOW);
+                } else {
+                    orientationNumber.setTextColor(Color.RED);
+                }
+                orientationNumber.setText((int) currentOrientation + "");
+            }
+        };
+
+        Intent intent = new Intent(this, OrientationService.class);
+        startService(intent);
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
+                new IntentFilter("orientation")
+        );
+        mSensorManager.registerListener(this, mOrientation, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        super.onPause();
+        if (mOrientaionServiceBound) {
+            unbindService(mServiceConnection);
+            mOrientaionServiceBound = false;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 
     public void registerBattleFieldActivityListener(BattleFieldActivityEvenListener l){
@@ -140,7 +220,19 @@ public class GameActivity extends AppCompatActivity implements Serializable{
 
     public void onPlayerPlayed(int x, int y, String status, boolean isGameOver, boolean playerWon, boolean rivalWon, int[] shipCount) {
         firePlayerPlayed(x, y, status, isGameOver, playerWon, rivalWon, shipCount);
+
+        if(status.equals("Miss")){
+            score += Constants.MISS_SCORE * (difficulty + 1);
+        }
+
         if(status.equals("Hit") || status.equals("Sunk")){
+
+            if(status.equals("Hit")){
+                score += Constants.HIT_SCORE * (difficulty + 1);
+            } else {
+                score += Constants.SUNK_SCORE * (difficulty + 1);
+            }
+
             shipsCounter--;
             sheepsDead++;
             TextView tv1 = (TextView) findViewById(R.id.deadSheepsCount);
@@ -149,8 +241,7 @@ public class GameActivity extends AppCompatActivity implements Serializable{
             tv2.setText(shipsCounter + "");
         }
 
-        
-
+        updateScore();
         showLoader();
         Runnable r = new Runnable() {
             @Override
@@ -177,8 +268,44 @@ public class GameActivity extends AppCompatActivity implements Serializable{
 
     public void onRivalPlayed(String status, boolean gameOver, boolean playerWins, boolean rivalWins){
         fireRivalPlayed(status, gameOver, playerWins, rivalWins);
+        if(status.equals("Hit") || status.equals("Sunk")){
+            score += Constants.RIVAL_HIT_SCORE * (difficulty + 1);
+        }
+        updateScore();
     }
 
+    public void updateScore(){
+        TextView tv = (TextView) findViewById(R.id.score);
+        tv.setText(score + "");
+    }
 
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mOrientaionServiceBound = false;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            OrientationService.OrientationServiceBinder myBinder = (OrientationService.OrientationServiceBinder) service;
+            orientationService = myBinder.getService();
+            mOrientaionServiceBound = true;
+        }
+    };
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        initialOrientation = event.values[1];
+        Log.e(TAG,"INITIAL_ORIENTATION = " + initialOrientation);
+        unregisterOrientationListener();
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    public void unregisterOrientationListener(){
+        mSensorManager.unregisterListener(this);
+    }
 
 }
