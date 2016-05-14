@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Player implements Serializable {
     private String mName;
     private boolean gameStatus;
+    private int Score=0;
     private int mtries=0;
     private int mlosses=0;
     private int mwins=0;
@@ -62,5 +63,12 @@ public class Player implements Serializable {
     public void setLongitude(long num) {
         this.mLongitude=num;
     }
-    
+
+    public int getScore() {
+        return Score;
+    }
+
+    public void setScore(int score) {
+        Score = score;
+    }
 }

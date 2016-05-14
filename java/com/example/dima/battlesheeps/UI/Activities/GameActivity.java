@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
@@ -93,7 +94,60 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
 
         }
 
+        // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
+        DEBUG();
+    }
 
+    // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
+    public void DEBUG(){
+        Button IS_HIGH_SCORE = (Button) findViewById(R.id.DEBUG_ISHIGHSCORE);
+        Button ADD_PLAYER = (Button) findViewById(R.id.DEBUG_APPPLAYER);
+        Button DELETELASTPLAYER = (Button) findViewById(R.id.DEBUG_DELETELASTPLAYER);
+        Button GETSCORESTABLE = (Button) findViewById(R.id.DEBUG_GETSCORESTABLE);
+        Button DECREASERANDOMHIT = (Button) findViewById(R.id.DEBUG_DECREASERANDOM);
+        Button SHUFFLE = (Button) findViewById(R.id.DEBUG_SHUFFLE);
+
+        IS_HIGH_SCORE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGame.isHighScore();
+            }
+        });
+
+        ADD_PLAYER.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGame.addPlayer();
+            }
+        });
+
+        DELETELASTPLAYER.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGame.deletelastPlayer();
+            }
+        });
+
+        GETSCORESTABLE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGame.getScoresTable();
+            }
+        });
+
+        SHUFFLE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGame.mComputerBoard.shuffleShip();
+            }
+        });
+
+        DECREASERANDOMHIT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGame.mComputerBoard.decreaseRandomHit();
+            }
+        });
     }
 
     @Override

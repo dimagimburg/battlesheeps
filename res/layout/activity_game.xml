@@ -91,9 +91,68 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/DEBUG">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="isHighScore"
+                android:id="@+id/DEBUG_ISHIGHSCORE"
+                android:textSize="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="addPlayer"
+                android:id="@+id/DEBUG_APPPLAYER"
+                android:textSize="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="deletelast"
+                android:id="@+id/DEBUG_DELETELASTPLAYER"
+                android:textSize="10dp"
+                android:longClickable="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="getScore"
+                android:id="@+id/DEBUG_GETSCORESTABLE"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/DEBUG2" >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="decreaserandom"
+                android:id="@+id/DEBUG_DECREASERANDOM"
+                android:textSize="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="shuffle"
+                android:id="@+id/DEBUG_SHUFFLE"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="280dp"
             android:id="@+id/rivalFieldWrapper">
 
         </RelativeLayout>

@@ -37,7 +37,7 @@ public class Board implements Serializable {
             sum+=i;
         return sum;
     }
-    private void shuffleShip() {
+    public void shuffleShip() {
         Random r = new Random();
         int numOfShip=r.nextInt(Ships.size());
         int x,y;
@@ -181,7 +181,7 @@ public class Board implements Serializable {
         }
 
     }
-    private void decreaseRandomHit() {
+    public void decreaseRandomHit() {
         Random r = new Random();
         int numOfShip;
         Ship ship;
