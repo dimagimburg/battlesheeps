@@ -48,6 +48,18 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
             });
         }
 
+        Button highScoreButton = (Button) findViewById(R.id.highScoreBtn);
+        highScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HighScore.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constants.BUNDLE_SETTINGS_KEY, mSettings);
+                intent.putExtras(bundle);
+                MainActivity.this.startActivity(intent);
+            }
+        });
+
         difficultyDialogButton = (LinearLayout) findViewById(R.id.difficultyButton);
         if (difficultyDialogButton != null) {
             difficultyDialogButton.setOnClickListener(new View.OnClickListener() {

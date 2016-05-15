@@ -127,7 +127,7 @@
                 android:textSize="10dp" />
 
         </LinearLayout>
-
+-->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -149,10 +149,9 @@
                 android:textSize="10dp" />
 
         </LinearLayout>
--->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="300dp"
             android:id="@+id/rivalFieldWrapper">
 
         </RelativeLayout>

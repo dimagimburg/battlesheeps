@@ -101,46 +101,46 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         }
 
         // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
-        //DEBUG();
+        DEBUG();
     }
-    /*
+
 
     // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
     public void DEBUG(){
-        Button IS_HIGH_SCORE = (Button) findViewById(R.id.DEBUG_ISHIGHSCORE);
-        Button ADD_PLAYER = (Button) findViewById(R.id.DEBUG_APPPLAYER);
-        Button DELETELASTPLAYER = (Button) findViewById(R.id.DEBUG_DELETELASTPLAYER);
-        Button GETSCORESTABLE = (Button) findViewById(R.id.DEBUG_GETSCORESTABLE);
+        //Button IS_HIGH_SCORE = (Button) findViewById(R.id.DEBUG_ISHIGHSCORE);
+        //Button ADD_PLAYER = (Button) findViewById(R.id.DEBUG_APPPLAYER);
+        //Button DELETELASTPLAYER = (Button) findViewById(R.id.DEBUG_DELETELASTPLAYER);
+        //Button GETSCORESTABLE = (Button) findViewById(R.id.DEBUG_GETSCORESTABLE);
         Button DECREASERANDOMHIT = (Button) findViewById(R.id.DEBUG_DECREASERANDOM);
         Button SHUFFLE = (Button) findViewById(R.id.DEBUG_SHUFFLE);
 
-        IS_HIGH_SCORE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGame.isHighScore();
-            }
-        });
-
-        ADD_PLAYER.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGame.addPlayer();
-            }
-        });
-
-        DELETELASTPLAYER.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGame.deletelastPlayer();
-            }
-        });
-
-        GETSCORESTABLE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGame.getScoresTable();
-            }
-        });
+        //IS_HIGH_SCORE.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        mGame.isHighScore();
+        //    }
+        //});
+//
+        //ADD_PLAYER.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        mGame.addPlayer();
+        //    }
+        //});
+//
+        //DELETELASTPLAYER.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        mGame.deletelastPlayer();
+        //    }
+        //});
+//
+        //GETSCORESTABLE.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        mGame.getScoresTable();
+        //    }
+        //});
 
         SHUFFLE.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,8 +156,6 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
             }
         });
     }
-
-*/
 
     @Override
     protected void onResume() {
@@ -193,6 +191,7 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
                             mGame.mComputerBoard.decreaseRandomHit();
                             score += (Constants.HIT_SCORE * (-1) * (difficulty + 1)) - 1;
                             updateScore();
+                            mGame.mComputerBoard.shuffleShip();
                             fireRivalBoardChanged();
                             mChronometer = null;
                             startedChronometer = false;
@@ -285,6 +284,7 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.WINNER_KEY, "Player");
+        bundle.putSerializable("game", mGame);
         intent.putExtras(bundle);
         GameActivity.this.startActivity(intent);
     }

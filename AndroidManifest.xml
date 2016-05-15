@@ -16,12 +16,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.Activities.GameActivity" />
-        <service android:name="com.example.dima.battlesheeps.UI.Services.OrientationService" >
-        </service>
+
+        <service android:name=".UI.Services.OrientationService"></service>
+
         <activity
             android:name=".UI.Activities.GameOverActivity"
             android:label="@string/title_activity_game_over"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.Activities.HighScore"></activity>
     </application>
 
 </manifest>

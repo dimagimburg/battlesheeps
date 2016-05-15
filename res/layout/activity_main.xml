@@ -123,9 +123,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="High Scores"
-        android:id="@+id/button"
+        android:id="@+id/highScoreBtn"
         android:layout_weight="6"
         android:background="#97bbe0"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:clickable="false" />
 
 </LinearLayout>
