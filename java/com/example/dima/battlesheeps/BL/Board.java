@@ -11,6 +11,7 @@ public class Board implements Serializable {
     private int mSize; //board size
     private int[] mShipNumbers; //how much ships per type
     private int mShipLeft; //ship left on board
+    private int hits=0; //hits on board
     private ArrayList<Ship> Ships = new ArrayList<>();
     //private ArrayList<String> mShipNames = new ArrayList<String>();
     //private ArrayList<Integer> mShipNumbers = new ArrayList<Integer>();
@@ -38,10 +39,16 @@ public class Board implements Serializable {
         return sum;
     }
     public void shuffleShip() {
+        if(hits==0)
+            return; //ho hits no need to move
         Random r = new Random();
         int numOfShip=r.nextInt(Ships.size());
         int x,y;
         Ship ship=Ships.get(numOfShip);
+       /* while(!ship.isHit()){
+            numOfShip=r.nextInt(Ships.size());
+            ship=Ships.get(numOfShip);
+        }*/
         boolean finished1=false;
         boolean finished2=false;
         boolean free=false;
@@ -51,8 +58,8 @@ public class Board implements Serializable {
             finished1=false;
             finished2=false;
             direction = r.nextInt(4);//0 up,1 right,2 down,3 left
-            if (direction==0 && ship.getCoordinate(0).getY()>0 || direction==1 && ship.getCoordinate(ship.getSize()).getX()<mSize ||
-                    direction==2 && ship.getCoordinate(ship.getSize()).getY()<mSize || direction==3 && ship.getCoordinate(0).getX()<0) //if the direction selected is valid on the board
+            if (direction==0 && ship.getCoordinate(0).getY()>0 || direction==1 && ship.getCoordinate(ship.getSize()-1).getX()<mSize ||
+                    direction==2 && ship.getCoordinate(ship.getSize()-1).getY()<mSize || direction==3 && ship.getCoordinate(0).getX()<0) //if the direction selected is valid on the board
                 finished1=true;
             else finished1=false;
             if(finished1){ // check that the new place is free
@@ -78,7 +85,7 @@ public class Board implements Serializable {
                 }
                 else if (direction==1)
                     if(!ship.isHorizontal())
-                    for (int i=ship.getSize();i>0 && !finished2;i--){
+                    for (int i=ship.getSize()-1;i>=0 && !finished2;i--){
                         x=ship.getCoordinate(i).getX();
                         y=ship.getCoordinate(i).getY();
                         if(!board[x+1][y].isFree()){
@@ -97,7 +104,7 @@ public class Board implements Serializable {
                 }
                 else if (direction==2)
                     if(ship.isHorizontal())
-                    for (int i=ship.getSize();i>0 && !finished2;i--){
+                    for (int i=ship.getSize()-1;i>=0 && !finished2;i--){
                         x=ship.getCoordinate(i).getX();
                         y=ship.getCoordinate(i).getY();
                         if(!board[x][y+1].isFree()){
@@ -149,7 +156,7 @@ public class Board implements Serializable {
             }
         }
         else if (direction==1)
-            for (int i=ship.getSize();i>0;i--){
+            for (int i=ship.getSize()-1;i>=0;i--){
                 x=ship.getCoordinate(i).getX();
                 y=ship.getCoordinate(i).getY();
                 board[x][y]=new Tile();
@@ -159,7 +166,7 @@ public class Board implements Serializable {
                 board[x+1][y].setStatus("Occupied");
         }
         else if (direction==2)
-            for (int i=ship.getSize();i>0;i--){
+            for (int i=ship.getSize()-1;i>=0;i--){
                 x=ship.getCoordinate(i).getX();
                 y=ship.getCoordinate(i).getY();
                 board[x][y]=new Tile();
@@ -187,19 +194,24 @@ public class Board implements Serializable {
         Ship ship;
         int index,x,y;
         boolean finished=false;
-        while(!finished){
-            numOfShip = r.nextInt(Ships.size());
-            ship=Ships.get(numOfShip);
-            if(!ship.isSunk() && ship.getHits()>0){
-                finished=true;
-                ship.decreaseHit();
-                index=r.nextInt(ship.getSize());
-                x=ship.getX(index);
-                y=ship.getY(index);
+        while(!finished) {
+            if (hits > 0){
+                numOfShip = r.nextInt(Ships.size());
+            ship = Ships.get(numOfShip);
+            if (!ship.isSunk() && ship.getHits() > 0) {
+                finished = true;
+
+                index = r.nextInt(ship.getHits());
+                x = ship.getX(index);
+                y = ship.getY(index);
                 board[x][y].getmShip().deleteX(index);
                 board[x][y].getmShip().deleteY(index);
+                ship.decreaseHit();
+                hits--;
                 board[x][y].setStatus("Occupied");
             }
+        }
+            else finished=true;
         }
 
     }
@@ -215,8 +227,6 @@ public class Board implements Serializable {
         for(int i=0;i<this.mSize;i++){
             for(int j=0;j<this.mSize;j++){
                 board[i][j]=new Tile();
-                //Ship sh=new Ship ("",1);
-                // board[i][j].setShip(sh);
             }
         }
         for (int num=0;num<mShipNumbers.length;num++) {
@@ -300,6 +310,7 @@ public class Board implements Serializable {
             }
             else {
                 board[coordX][coordY].getmShip().addHit();//add hit to ship
+                hits++;
                 board[coordX][coordY].getmShip().addX(coordX);
                 board[coordX][coordY].getmShip().addY(coordY);
                 if (board[coordX][coordY].getmShip().isSunk()) {//last hit on the ship== ship sunk

@@ -2,9 +2,12 @@ package com.example.dima.battlesheeps.BL;
 //package battleship;
 //import android.util.Log;
 
+import android.content.Context;
+
 import com.example.dima.battlesheeps.MVCListeners.GameEventListener;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -23,10 +26,12 @@ public class Game implements Serializable {
     private int coordY;
     private String status;
     Random r = new Random();
-    DBHelper dbhelper = new DBHelper(null, "BattleShip", 0);
+    Context context = null;
+    private DBHelper dbhelper;
     private Vector<GameEventListener> mListeners = new Vector<>();
 
-    public Game(int difficulty){
+    public Game(int difficulty,DBHelper dbhelper){
+        this.dbhelper=dbhelper;
         this.mDifficulty=new Difficulty(difficulty);
         this.mPlayerBoard = new Board(this.mDifficulty.getBoardSize(),mDifficulty.mDefaultShipNumber);
         this.mComputerBoard = new Board(this.mDifficulty.getBoardSize(),mDifficulty.mDefaultShipNumber);
@@ -44,7 +49,7 @@ public class Game implements Serializable {
         dbhelper.deletelastPlayer(mDifficulty.getDifficulty(),mPlayer);
     }
 
-    public String[][] getScoresTable() {
+    public ArrayList<String> getScoresTable() {
         return dbhelper.getScoresTable(mDifficulty.getDifficulty());
     }
     public int getBoardSize() {

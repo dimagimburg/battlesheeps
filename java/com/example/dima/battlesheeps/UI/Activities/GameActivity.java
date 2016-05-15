@@ -13,15 +13,18 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.example.dima.battlesheeps.BL.Game;
+import com.example.dima.battlesheeps.BL.DBHelper;
 import com.example.dima.battlesheeps.Controllers.BattleFieldController;
 import com.example.dima.battlesheeps.MVCListeners.BattleFieldActivityEvenListener;
 import com.example.dima.battlesheeps.R;
@@ -57,15 +60,18 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
     private int difficulty;
     BroadcastReceiver receiver;
     private int score = 0;
+    private Chronometer mChronometer;
+    private boolean startedChronometer = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.e(TAG,"onCreate");
+        DBHelper dbhelper = new DBHelper(this);
         super.onCreate(savedInstanceState);
         HashMap settings = (HashMap) getIntent().getExtras().getSerializable(Constants.BUNDLE_SETTINGS_KEY);
         try {
             difficulty = Integer.parseInt((String) settings.get(Constants.SETTINGS_DIFFICULTY_KEY));
-            mGame = new Game(difficulty);
+            mGame = new Game(difficulty,dbhelper);
         } catch (NullPointerException e){
             Log.e(TAG, e.getMessage() + " [ no setting with key : " + Constants.SETTINGS_DIFFICULTY_KEY + " ]");
         }
@@ -95,8 +101,9 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         }
 
         // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
-        DEBUG();
+        //DEBUG();
     }
+    /*
 
     // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
     public void DEBUG(){
@@ -150,6 +157,8 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         });
     }
 
+*/
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -166,9 +175,29 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
                 float currentOrientation = initialOrientation - f;
                 if(Math.abs(currentOrientation) < Constants.ORIENTATION_DIFF_ACCEPTED / 2){
                     orientationNumber.setTextColor(Color.GREEN);
+                    mChronometer = null;
+                    startedChronometer = false;
                 } else if(Math.abs(currentOrientation) < Constants.ORIENTATION_DIFF_ACCEPTED){
                     orientationNumber.setTextColor(Color.YELLOW);
+                    mChronometer = null;
+                    startedChronometer = false;
                 } else {
+                    if(!startedChronometer){
+                        mChronometer = new Chronometer(getBaseContext());
+                        mChronometer.setBase(SystemClock.elapsedRealtime());
+                        mChronometer.start();
+                        startedChronometer = true;
+                    } else {
+                        if(SystemClock.elapsedRealtime() - mChronometer.getBase() > 2000){
+                            Log.e(TAG, "time elapsed: " + (SystemClock.elapsedRealtime() - mChronometer.getBase()));
+                            mGame.mComputerBoard.decreaseRandomHit();
+                            score += (Constants.HIT_SCORE * (-1) * (difficulty + 1)) - 1;
+                            updateScore();
+                            fireRivalBoardChanged();
+                            mChronometer = null;
+                            startedChronometer = false;
+                        }
+                    }
                     orientationNumber.setTextColor(Color.RED);
                 }
                 orientationNumber.setText((int) currentOrientation + "");
@@ -216,6 +245,12 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
 
     public void registerGameActivityPlayerEventListener(GameActivityPlayerFieldListener l){
         mPlayerFieldListeners.add(l);
+    }
+
+    private void fireRivalBoardChanged(){
+        for(GameActivityRivalFieldListener l : mRivalFieldListeners){
+            l.onUpdateBoard();
+        }
     }
 
     private void firePlayerPlays(int x, int y) {

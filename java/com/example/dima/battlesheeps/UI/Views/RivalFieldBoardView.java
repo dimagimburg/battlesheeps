@@ -161,4 +161,9 @@ public class RivalFieldBoardView extends GridView implements GameActivityRivalFi
             mContext.playerWon();
         }
     }
+
+    @Override
+    public void onUpdateBoard() {
+        adapter.notifyDataSetChanged();
+    }
 }

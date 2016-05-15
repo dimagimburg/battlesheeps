@@ -77,6 +77,11 @@ public class Ship implements Serializable {
     public boolean isSunk() {
         return misSunk;
     }
+    public boolean isHit() {
+        if(mhits>0)
+            return true;
+        else return false;
+    }
 
     public boolean isHorizontal() {
         return horizontal;

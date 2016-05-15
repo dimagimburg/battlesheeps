@@ -7,28 +7,36 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-class DBHelper extends SQLiteOpenHelper {
+import java.util.ArrayList;
+
+public class DBHelper extends SQLiteOpenHelper {
     //final String CREATE_TABLE = "CREATE TABLE myTable(...)";
-    private static String DB_PATH = "/data/data/com.example.dima.battlesheeps.BL/databases/";
+    private static String DB_PATH = "/data/data/com.example.dima.battlesheeps/databases/";
     private String DBName;
     private Context mContext;
     private int Difficulties=0;
+    private ArrayList<String> tables = new ArrayList<>();
+    private final String TAG = "DBHelper";
 
 
-    public DBHelper(Context context, String DBName, int Difficulties){
-        super(context, DBName, null, 1);
+    public DBHelper(Context context){
+        super(context, "BattleShip", null, 1);
         mContext = context;
-        this.Difficulties=Difficulties;
-        this.DBName=DBName+".db";
+        //this.Difficulties=Difficulties;
+       //this.DBName=DBName+".db";
+        tables.add("Amateur");
+        tables.add("Advanced");
+        tables.add("Hard");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        for(int i=0;i<Difficulties;i++) {
-            String sqlquery = "CREATE TABLE " + i + " (Name TEXT PRIMARY KEY,Tries INTEGER,Latitude NUM, Longitude NUM)";
+        String sqlquery;
+        for (String t:tables) {
+            sqlquery = "CREATE TABLE "+t+" (ID integer primary key autoincrement,Name TEXT,Score INTEGER,Latitude NUMERIC,Longitude NUMERIC)";
             db.execSQL(sqlquery);
-            db.close();
         }
     }
 
@@ -40,24 +48,42 @@ class DBHelper extends SQLiteOpenHelper {
 
     }
     public void addPlayer(int diff,Player player) {
-        //db.execSQL("INSERT INTO "+table+" VALUES ("+player.getName()+","+player.getTries()+","+player.getLatitude()+","+player.getLongitude()+")");
-        String table=Integer.toString(diff);
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("Name", player.getName());
-        values.put("Tries", player.getTries());
-        values.put("Latitude", player.getLatitude());
-        values.put("Longitude", player.getLongitude());
-        db.insert(table, null, values);
-        db.close();
-    }
-
-    public void deletelastPlayer(int diff,Player player) {
-        String table=Integer.toString(diff);
         SQLiteDatabase dbw = getWritableDatabase();
         SQLiteDatabase dbr = getReadableDatabase();
-        Cursor c=dbr.rawQuery("SELECT MAX(Tries) FROM "+table,null);
-        dbw.delete(table,"Tries"+c.getInt(0),null);
+        Cursor cur=dbr.query(tables.get(diff),new String[]{"ID"},null,null,null,null,null,null);
+
+        if (cur.getCount()>9) {
+            Cursor c = dbr.query(tables.get(diff), new String[] { "min(Score)" }, null, null,
+                    null, null, null);
+            c.moveToFirst();
+            int min=c.getInt(0);
+            //c = dbr.query(tables.get(diff), new String[] { "ID" }, null, null,
+                   // null, null, null);
+            c.close();
+            c=dbr.query(tables.get(diff), new String[]{"ID"}, "Score=?", new String[] {Integer.toString(min)}, null, null, null);
+            c.moveToFirst();
+            //Log.e(TAG,Integer.toString(c.getInt(0)));
+            dbw.delete(tables.get(diff), "ID=" + c.getInt(0), null);
+        }
+        ContentValues values = new ContentValues();
+        values.put("Name", player.getName());
+        values.put("Score", player.getScore());
+        values.put("Latitude", player.getLatitude());
+        values.put("Longitude", player.getLongitude());
+        dbw.insert(tables.get(diff), null, values);
+        dbr.close();
+        dbw.close();
+        cur.close();
+    }
+
+    public void deletelastPlayer(int diff,Player player){
+        SQLiteDatabase dbw = getWritableDatabase();
+        SQLiteDatabase dbr = getReadableDatabase();
+        Cursor cur=dbr.query(tables.get(diff),new String[]{"ID"},null,null,null,null,null,null);
+        if (cur.getColumnCount()>10) {
+            Cursor c = dbr.rawQuery("SELECT MIN(Score) FROM " + tables.get(diff), null);
+            dbw.delete(tables.get(diff), "Score" + c.getInt(0), null);
+        }
         dbr.close();
         dbw.close();
        // db.execSQL("INSERT INTO "+table+" VALUES ("+player.getName()+","+player.getTries()+","+player.getLatitude()+","+player.getLongitude()+")");
@@ -65,29 +91,41 @@ class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean isHighScore(int diff, Player player) {
-        String table=Integer.toString(diff);
         SQLiteDatabase dbr = getReadableDatabase();
-        Cursor c=dbr.rawQuery("SELECT MAX(Tries) FROM "+table,null);
-        long rowcount=DatabaseUtils.queryNumEntries(dbr,table);
+        Cursor cur=dbr.query(tables.get(diff),new String[]{"ID"},null,null,null,null,null,null);
+        int numOfRows=cur.getCount();
+        Log.e(TAG,Integer.toString(numOfRows));
+        cur.close();
+        cur = dbr.query(tables.get(diff), new String[] { "min(Score)" }, null, null,
+                null, null, null);
+        cur.moveToFirst();
         dbr.close();
-        if(rowcount<10 || c.getInt(0)<player.getTries()) {
+        if(numOfRows<10 || cur.getInt(0)<player.getScore()) {
+            Log.e(TAG,"True");
             return true;
         }
-        else return false;
-    }
-    public String[][] getScoresTable(int diff) {
-        String table=Integer.toString(diff);
-        SQLiteDatabase dbr = getReadableDatabase();
-        Cursor cur=dbr.query(table,null,null,null,null,null,null,null);
-        String[][] result=new String[4][];
-        int j=0;
-        do{
-            for(int i=0;i<4;i++)
-            result[j][i]=cur.getString(i);
-            j++;
+        else {
+            Log.e(TAG,"False");
+            return false;
         }
-        while (!cur.isLast());
+    }
+    public ArrayList<String> getScoresTable(int diff) {
+        SQLiteDatabase dbr = getReadableDatabase();
+        Cursor cur=dbr.query(tables.get(diff),new String[]{"Name","Score","Latitude","Longitude"},null,null,null,null,null,null);
+        int rows=cur.getCount();
+        int columns=cur.getColumnCount();
+        ArrayList<String> result = new ArrayList<>();
+
+        while(cur.moveToNext()){
+            result.add(cur.getString(0));
+            result.add(cur.getString(1));
+            result.add(cur.getString(2));
+            result.add(cur.getString(3));
+
+        }
         dbr.close();
+                Log.e(TAG,result.toString());
+
         return result;
     }
 
