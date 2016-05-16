@@ -9,9 +9,10 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DBHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper implements Serializable{
     //final String CREATE_TABLE = "CREATE TABLE myTable(...)";
     private static String DB_PATH = "/data/data/com.example.dima.battlesheeps/databases/";
     private String DBName;

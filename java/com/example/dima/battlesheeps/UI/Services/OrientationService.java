@@ -15,7 +15,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Chronometer;
 
-public class OrientationService extends Service implements SensorEventListener{
+import java.io.Serializable;
+
+public class OrientationService extends Service implements SensorEventListener, Serializable{
 
     private final String TAG = "OrientationService";
 

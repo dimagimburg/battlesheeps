@@ -3,31 +3,32 @@ package com.example.dima.battlesheeps.BL;
 //import android.util.Log;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.dima.battlesheeps.MVCListeners.GameEventListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
-public class Game implements Serializable {
+public class Game implements Parcelable {
     public Board mPlayerBoard;
     public Board mComputerBoard;
-    private Player mPlayer = new Player("Human");
+    public Player mPlayer = new Player("Human");
     private int[] mLastHit=new int[2];
     private int[] mLastFirstHit=new int[2];
     private boolean isLastTurnHit=false;
     private int[] direction={0,0,0,0}; //right,down,left,up
-    private Difficulty mDifficulty; // Normal default
-    final int[] mBoardSize={8,10,12};
+    public Difficulty mDifficulty; // Normal default
+    int[] mBoardSize={8,10,12};
     private boolean isComputerWon=false;
     private int coordX;
     private int coordY;
     private String status;
     Random r = new Random();
     Context context = null;
-    private DBHelper dbhelper;
+    public DBHelper dbhelper;
     private Vector<GameEventListener> mListeners = new Vector<>();
 
     public Game(int difficulty,DBHelper dbhelper){
@@ -37,6 +38,31 @@ public class Game implements Serializable {
         this.mComputerBoard = new Board(this.mDifficulty.getBoardSize(),mDifficulty.mDefaultShipNumber);
         mPlayer.setGameStatus(false);
     }
+
+    protected Game(Parcel in) {
+        mLastHit = in.createIntArray();
+        mLastFirstHit = in.createIntArray();
+        isLastTurnHit = in.readByte() != 0;
+        direction = in.createIntArray();
+        mBoardSize = in.createIntArray();
+        isComputerWon = in.readByte() != 0;
+        coordX = in.readInt();
+        coordY = in.readInt();
+        status = in.readString();
+    }
+
+    public static final Creator<Game> CREATOR = new Creator<Game>() {
+        @Override
+        public Game createFromParcel(Parcel in) {
+            return new Game(in);
+        }
+
+        @Override
+        public Game[] newArray(int size) {
+            return new Game[size];
+        }
+    };
+
     public boolean isHighScore() {
         return dbhelper.isHighScore(mDifficulty.getDifficulty(),mPlayer);
     }
@@ -220,6 +246,23 @@ public class Game implements Serializable {
         mListeners.add(gel);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeIntArray(mLastHit);
+        dest.writeIntArray(mLastFirstHit);
+        dest.writeByte((byte) (isLastTurnHit ? 1 : 0));
+        dest.writeIntArray(direction);
+        dest.writeIntArray(mBoardSize);
+        dest.writeByte((byte) (isComputerWon ? 1 : 0));
+        dest.writeInt(coordX);
+        dest.writeInt(coordY);
+        dest.writeString(status);
+    }
 }
 enum status {
     Hidden, Hit, Miss

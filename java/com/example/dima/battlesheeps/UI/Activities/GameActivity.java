@@ -41,7 +41,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Vector;
 
-public class GameActivity extends AppCompatActivity implements Serializable,SensorEventListener {
+public class GameActivity extends AppCompatActivity implements Serializable {
 
     private final String TAG = "GameActivity";
 
@@ -54,9 +54,8 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
     private int sheepsDead = 0;
     private OrientationService orientationService;
     private boolean mOrientaionServiceBound = false;
-    private SensorManager mSensorManager;
-    private Sensor mOrientation;
     private float initialOrientation;
+    private boolean initialOrientationSet = false;
     private int difficulty;
     BroadcastReceiver receiver;
     private int score = 0;
@@ -71,6 +70,7 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         HashMap settings = (HashMap) getIntent().getExtras().getSerializable(Constants.BUNDLE_SETTINGS_KEY);
         try {
             difficulty = Integer.parseInt((String) settings.get(Constants.SETTINGS_DIFFICULTY_KEY));
+            Log.e(TAG,"diff: " + difficulty);
             mGame = new Game(difficulty,dbhelper);
         } catch (NullPointerException e){
             Log.e(TAG, e.getMessage() + " [ no setting with key : " + Constants.SETTINGS_DIFFICULTY_KEY + " ]");
@@ -86,7 +86,7 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
 
         if (savedInstanceState == null) {
             Bundle args = new Bundle();
-            args.putSerializable("game", mGame);
+            args.putParcelable("game", mGame);
 
             FragmentTransaction ftRival = getFragmentManager().beginTransaction();
             RivalContainerFragment rivalContainerFragment = new RivalContainerFragment();
@@ -100,61 +100,6 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
 
         }
 
-        // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
-        DEBUG();
-    }
-
-
-    // TODO: REMOVE DEBUG! FIELD HEIGHT BACK TO 320
-    public void DEBUG(){
-        //Button IS_HIGH_SCORE = (Button) findViewById(R.id.DEBUG_ISHIGHSCORE);
-        //Button ADD_PLAYER = (Button) findViewById(R.id.DEBUG_APPPLAYER);
-        //Button DELETELASTPLAYER = (Button) findViewById(R.id.DEBUG_DELETELASTPLAYER);
-        //Button GETSCORESTABLE = (Button) findViewById(R.id.DEBUG_GETSCORESTABLE);
-        Button DECREASERANDOMHIT = (Button) findViewById(R.id.DEBUG_DECREASERANDOM);
-        Button SHUFFLE = (Button) findViewById(R.id.DEBUG_SHUFFLE);
-
-        //IS_HIGH_SCORE.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        mGame.isHighScore();
-        //    }
-        //});
-//
-        //ADD_PLAYER.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        mGame.addPlayer();
-        //    }
-        //});
-//
-        //DELETELASTPLAYER.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        mGame.deletelastPlayer();
-        //    }
-        //});
-//
-        //GETSCORESTABLE.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        mGame.getScoresTable();
-        //    }
-        //});
-
-        SHUFFLE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGame.mComputerBoard.shuffleShip();
-            }
-        });
-
-        DECREASERANDOMHIT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGame.mComputerBoard.decreaseRandomHit();
-            }
-        });
     }
 
     @Override
@@ -162,14 +107,15 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         super.onResume();
 
         final TextView orientationNumber = (TextView) findViewById(R.id.orientationNumber);
-
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mOrientation = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 float f = intent.getFloatExtra("orientation", 0);
+                if(!initialOrientationSet){
+                    initialOrientationSet = true;
+                    initialOrientation = f;
+                }
+
                 float currentOrientation = initialOrientation - f;
                 if(Math.abs(currentOrientation) < Constants.ORIENTATION_DIFF_ACCEPTED / 2){
                     orientationNumber.setTextColor(Color.GREEN);
@@ -209,7 +155,6 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
                 new IntentFilter("orientation")
         );
-        mSensorManager.registerListener(this, mOrientation, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
@@ -284,7 +229,9 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
         Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.WINNER_KEY, "Player");
-        bundle.putSerializable("game", mGame);
+        bundle.putInt("score", 100000);
+        bundle.putInt("difficulty",difficulty);
+        bundle.putParcelable("game", mGame);
         intent.putExtras(bundle);
         GameActivity.this.startActivity(intent);
     }
@@ -382,19 +329,4 @@ public class GameActivity extends AppCompatActivity implements Serializable,Sens
             mOrientaionServiceBound = true;
         }
     };
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        initialOrientation = event.values[1];
-        Log.e(TAG,"INITIAL_ORIENTATION = " + initialOrientation);
-        unregisterOrientationListener();
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-
-    public void unregisterOrientationListener(){
-        mSensorManager.unregisterListener(this);
-    }
-
 }

@@ -19,7 +19,7 @@ public class PlayerContainerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
-        Game mGame = (Game) args.getSerializable("game");
+        Game mGame = (Game) args.getParcelable("game");
         PlayerFieldBoardView boardView = new PlayerFieldBoardView(getActivity());
         boardView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, GridView.LayoutParams.MATCH_PARENT));
         boardView.init(mGame);
