@@ -16,13 +16,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.Activities.GameActivity" />
-
-        <service android:name=".UI.Services.OrientationService"></service>
+        <service android:name=".UI.Services.OrientationService" />
         <activity
             android:name=".UI.Activities.GameOverActivity"
             android:label="@string/title_activity_game_over"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.Activities.HighScore"></activity>
+        <activity android:name=".UI.Activities.HighScore" />
     </application>
-
 </manifest>

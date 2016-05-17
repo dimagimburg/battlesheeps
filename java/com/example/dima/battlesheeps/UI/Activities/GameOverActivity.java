@@ -30,10 +30,11 @@ public class GameOverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_over);
         View v;
         String whoWon =  getIntent().getExtras().getString(Constants.WINNER_KEY);
+        final int difficulty = getIntent().getExtras().getInt("difficulty");
         if(whoWon.equals("Player")){
-            Game mGame = (Game) getIntent().getExtras().getParcelable("game");
+            final Game mGame = (Game) getIntent().getExtras().getParcelable("game");
             int score = getIntent().getExtras().getInt("score");
-            int difficulty = getIntent().getExtras().getInt("difficulty");
+
             mGame.mPlayer.setScore(score);
             mGame.mDifficulty = new Difficulty(difficulty);
             DBHelper dbhelper = new DBHelper(this);
@@ -63,7 +64,8 @@ public class GameOverActivity extends AppCompatActivity {
                                         // get user input and set it to result
                                         // edit text
                                         name[0] = userInput.getText().toString();
-                                        Log.e("NAMEEEEE",name[0]);
+                                        mGame.mPlayer.setName(name[0]);
+                                        mGame.addPlayer();
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -84,15 +86,29 @@ public class GameOverActivity extends AppCompatActivity {
         }
         v.setVisibility(View.VISIBLE);
 
-        Button btn = (Button) findViewById(R.id.backToMenu);
+        Button backToMenu = (Button) findViewById(R.id.backToMenu);
+        Button highScores = (Button) findViewById(R.id.goToHishScoreButton);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        backToMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GameOverActivity.this, MainActivity.class);
                 GameOverActivity.this.startActivity(intent);
             }
         });
+
+        highScores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameOverActivity.this, HighScore.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("difficulty", difficulty);
+                intent.putExtras(bundle);
+                GameOverActivity.this.startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override

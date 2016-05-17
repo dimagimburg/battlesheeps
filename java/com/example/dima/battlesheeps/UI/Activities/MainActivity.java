@@ -54,7 +54,7 @@ public class MainActivity extends FragmentActivity implements MainActivityDiffic
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HighScore.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Constants.BUNDLE_SETTINGS_KEY, mSettings);
+                bundle.putInt("difficulty", Integer.parseInt(mSettings.get(Constants.SETTINGS_DIFFICULTY_KEY)));
                 intent.putExtras(bundle);
                 MainActivity.this.startActivity(intent);
             }
