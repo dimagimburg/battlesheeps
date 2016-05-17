@@ -12,8 +12,8 @@ public class Player implements Serializable {
     private int mtries=0;
     private int mlosses=0;
     private int mwins=0;
-    private long mLatitude=0;
-    private long mLongitude=0;
+    private double mLatitude=0;
+    private double mLongitude=0;
 
 
     public Player(String mName){
@@ -51,16 +51,16 @@ public class Player implements Serializable {
     public void addTry() {
         this.mtries++;
     }
-    public long getLatitude() {
+    public double getLatitude() {
         return mLatitude;
     }
-    public void setLatitude(long num) {
+    public void setLatitude(double num) {
         this.mLatitude=num;
     }
-    public long getLongitude() {
+    public double getLongitude() {
         return mLongitude;
     }
-    public void setLongitude(long num) {
+    public void setLongitude(double num) {
         this.mLongitude=num;
     }
 

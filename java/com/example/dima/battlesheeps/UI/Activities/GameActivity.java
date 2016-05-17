@@ -229,7 +229,7 @@ public class GameActivity extends AppCompatActivity implements Serializable {
         Intent intent = new Intent(GameActivity.this, GameOverActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(Constants.WINNER_KEY, "Player");
-        bundle.putInt("score", 100000);
+        bundle.putInt("score", score);
         bundle.putInt("difficulty",difficulty);
         bundle.putParcelable("game", mGame);
         intent.putExtras(bundle);
